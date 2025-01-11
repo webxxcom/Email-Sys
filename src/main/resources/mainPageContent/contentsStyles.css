@@ -1,0 +1,7 @@
+.search-bar {
+    -fx-pref-width: 250px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-background-radius: 5px;
+}

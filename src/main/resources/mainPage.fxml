@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.17" prefHeight="445.0" prefWidth="750.0"
+           style="-fx-background-color: lightGray;"
+           stylesheets="@styles.css"
+           xmlns="http://javafx.com/javafx/11.0.14-internal"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.email.sys.controllers.MainPageController">
+    <VBox fx:id="navigationPanel" alignment="CENTER" prefHeight="405.0" prefWidth="131.0" styleClass="sidebar">
+        <Button fx:id="inboxButton" onAction="#switchToInbox" prefWidth="68.0" styleClass="sidebar-button" text="Inbox" />
+        <Button fx:id="sentButton" onAction="#switchToSent" prefWidth="68.0" styleClass="sidebar-button" text="Sent" />
+        <Button fx:id="sendButton" onAction="#switchToSend" prefWidth="68.0" styleClass="sidebar-button" text="Send" />
+        <Button fx:id="logOutButton" mnemonicParsing="false" prefWidth="68.0" styleClass="sidebar-button" text="Log out" />
+    </VBox>
+    <VBox fx:id="contentArea" prefHeight="388.0" prefWidth="497.0">
+    </VBox>
+</SplitPane>
