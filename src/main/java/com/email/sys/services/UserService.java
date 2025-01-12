@@ -50,6 +50,21 @@ public class UserService implements Cleaner.Cleanable {
         return Result.success(user);
     }
 
+    public void sendEmail(User from, String to, Email email){
+        from.sendEmail(email);
+
+        User recipient = getForEmail(to);
+        recipient.receiveEmail
+
+        em.getTransaction().begin();
+        Query q = em.createQuery("insert into Email(text) values(?1)");
+        q.setParameter(1, email.getText());
+
+        em.persist();
+
+
+    }
+
     @Override
     public void clean() {
         em.close();
@@ -57,7 +72,7 @@ public class UserService implements Cleaner.Cleanable {
     }
 
     public ObservableList<Email> getInbox(long id) {
-        Query q = em.createQuery("select u.emails from User u where u.id = ?1");
+        Query q = em.createQuery("select u.inboxEmails from User u where u.id = ?1");
         q.setParameter(1, id);
 
         return FXCollections.observableArrayList(q.getResultList());

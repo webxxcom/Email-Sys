@@ -10,6 +10,11 @@ public class Email {
     @Column(nullable = false, updatable = false)
     String text;
 
-    @ManyToOne
-    User sender;
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }

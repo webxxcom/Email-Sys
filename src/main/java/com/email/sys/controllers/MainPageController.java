@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -35,7 +37,8 @@ public class MainPageController {
     private final UserService userService;
     private final SessionService sessionService;
 
-    @FXML VBox contentArea;
+    @FXML
+    Pane contentArea;
     @FXML VBox navigationPanel;
 
     @FXML Button inboxButton;
@@ -58,27 +61,16 @@ public class MainPageController {
 
     @FXML
     public void switchToSend(){
-        showContent(Contents.SEND, null);
+        showContent(Contents.SEND);
     }
 
     @FXML
     public void switchToInbox(){
-        showContent(Contents.INBOX, userService.getInbox(sessionService.getUser().getId()));
+        showContent(Contents.INBOX);
     }
 
-    private void showContent(Contents contentFile, ObservableList<Email> insideView){
-        Node content = loader.loadFXML(contentFile.path);
-        List<Node> children = contentArea.getChildren();
-        if(!children.contains(content)){
-            children.clear();
-            children.add(content);
-            if(insideView != null){
-                List<Node> ls =  children.stream().filter(n -> n.getId().equals("inboxList")).toList();
-                if(!ls.isEmpty())
-                    ((ListView<Email>) ls.getFirst()).setItems(insideView);
-            }
-        }
+    private void showContent(Contents content){
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(loader.loadFXML(content.path));
     }
-
-
 }

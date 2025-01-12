@@ -16,7 +16,10 @@ public class User {
     String password;
 
     @OneToMany
-    List<Email> emails;
+    List<Email> sentEmails;
+
+    @OneToMany
+    List<Email> inboxEmails;
 
     public User(){
 
@@ -49,5 +52,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Email> getSentEmails() {
+        return sentEmails;
+    }
+
+    public void setSentEmails(List<Email> sentEmails) {
+        this.sentEmails = sentEmails;
+    }
+
+    public List<Email> getInboxEmails() {
+        return inboxEmails;
+    }
+
+    public void setInboxEmails(List<Email> inboxEmails) {
+        this.inboxEmails = inboxEmails;
     }
 }

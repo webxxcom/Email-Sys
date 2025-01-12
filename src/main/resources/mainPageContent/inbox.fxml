@@ -3,10 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.22613065326633167" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1">
-    <HBox alignment="CENTER" prefHeight="72.0" spacing="20">
-        <TextField promptText="Type keywords" styleClass="search-bar" />
-        <Button mnemonicParsing="false" styleClass="primary-button" text="Search" />
+<SplitPane dividerPositions="0.23" minHeight="400.0" minWidth="600.0" orientation="VERTICAL" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.InboxController">
+    <HBox alignment="CENTER" minHeight="72.0" spacing="20">
+        <TextField fx:id="searchBar" promptText="Type keywords" styleClass="search-bar" />
+        <Button fx:id="searchButton" mnemonicParsing="false" styleClass="primary-button" text="Search" />
     </HBox>
-   <ListView fx:id="inboxList" prefHeight="200.0" prefWidth="200.0" styleClass="email-list"/>
+   <ListView fx:id="contentInnerPane" styleClass="email-list" />
 </SplitPane>
