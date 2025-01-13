@@ -50,19 +50,15 @@ public class UserService implements Cleaner.Cleanable {
         return Result.success(user);
     }
 
-    public void sendEmail(User from, String to, Email email){
-        from.sendEmail(email);
-
-        User recipient = getForEmail(to);
-        recipient.receiveEmail
+    public void sendEmail(User sender, String receiverEmail, String emailText){
+        User receiver = getForEmail(receiverEmail);
 
         em.getTransaction().begin();
-        Query q = em.createQuery("insert into Email(text) values(?1)");
-        q.setParameter(1, email.getText());
+        Email email = em.merge(new Email(emailText, sender, receiver));
+        em.getTransaction().commit();
+        System.out.println(email);
 
-        em.persist();
-
-
+        sender.sendEmail(receiver, email);
     }
 
     @Override
@@ -73,6 +69,13 @@ public class UserService implements Cleaner.Cleanable {
 
     public ObservableList<Email> getInbox(long id) {
         Query q = em.createQuery("select u.inboxEmails from User u where u.id = ?1");
+        q.setParameter(1, id);
+
+        return FXCollections.observableArrayList(q.getResultList());
+    }
+
+    public ObservableList<Email> getSent(Long id) {
+        Query q = em.createQuery("select u.sentEmails from User u where id = ?1");
         q.setParameter(1, id);
 
         return FXCollections.observableArrayList(q.getResultList());

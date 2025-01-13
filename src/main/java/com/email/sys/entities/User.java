@@ -3,23 +3,24 @@ package com.email.sys.entities;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
-    String email;
+    private String email;
 
     @Column(nullable = false)
-    String password;
+    private String password;
 
-    @OneToMany
-    List<Email> sentEmails;
+    @OneToMany(mappedBy = "sender")
+    private List<Email> sentEmails;
 
-    @OneToMany
-    List<Email> inboxEmails;
+    @OneToMany(mappedBy = "receiver")
+    private List<Email> inboxEmails;
 
     public User(){
 
@@ -28,6 +29,14 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public void sendEmail(User to, Email email){
+        Objects.requireNonNull(email);
+        Objects.requireNonNull(to);
+
+        this.sentEmails.add(email);
+        to.inboxEmails.add(email);
     }
 
     public Long getId() {
@@ -68,5 +77,17 @@ public class User {
 
     public void setInboxEmails(List<Email> inboxEmails) {
         this.inboxEmails = inboxEmails;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(sentEmails, user.sentEmails) && Objects.equals(inboxEmails, user.inboxEmails);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, sentEmails, inboxEmails);
     }
 }

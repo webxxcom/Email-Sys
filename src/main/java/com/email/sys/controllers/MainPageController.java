@@ -6,6 +6,7 @@ import com.email.sys.services.UserService;
 import com.email.sys.entities.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -16,15 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Component
 @Scope("prototype")
-public class MainPageController {
-
+public class MainPageController implements Initializable {
     private enum Contents {
         INBOX("/inbox"),
-        SEND("/send");
+        SEND("/send"),
+        SENT("/sent");
 
         final String path;
 
@@ -53,10 +56,16 @@ public class MainPageController {
         this.sessionService = sessionService;
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        inboxButton.setOnAction(evt -> switchToInbox());
+        sendButton.setOnAction(evt -> switchToSend());
+        sentButton.setOnAction(evt -> switchToSent());
+    }
 
     @FXML
     public void switchToSent(){
-        //TODO implement switch to sent
+        showContent(Contents.SENT);
     }
 
     @FXML

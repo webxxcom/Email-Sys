@@ -4,13 +4,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="BOTTOM_RIGHT" prefHeight="310.0" prefWidth="430.0" spacing="20" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.MainPageController">
+<VBox alignment="BOTTOM_RIGHT" prefHeight="310.0" prefWidth="430.0" spacing="20"
+      xmlns="http://javafx.com/javafx/11.0.14-internal"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.email.sys.controllers.SendController">
     <padding>
         <Insets left="10" right="10" bottom="10" top="10" />
     </padding>
 
-    <TextField promptText="To:" />
-    <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Enter your text here" />
-    <Button contentDisplay="CENTER" mnemonicParsing="false"
-            styleClass="primary-button" text="Button"/>
+    <TextField fx:id="recipientGmail" promptText="To:" />
+    <TextArea fx:id="emailText" prefHeight="200.0" prefWidth="200.0" promptText="Enter your text here" />
+    <Button fx:id="sendButton" contentDisplay="CENTER"
+            styleClass="primary-button" text="Send"/>
 </VBox>
