@@ -9,16 +9,12 @@ public class Result<T> {
         this.data = data;
     }
 
-    public static <E> Result<E> error(String error){
+    public static <E> Result<E> ofError(String error){
         return new Result<>(error, null);
     }
 
-    public static <E> Result<E> success(E data){
+    public static <E> Result<E> of(E data){
         return new Result<>(null, data);
-    }
-
-    public static <E> Result<E> errorIf(boolean flag, String errorText) {
-        return flag ? Result.error(errorText) : Result.success(null);
     }
 
     public boolean isSuccess(){

@@ -5,15 +5,21 @@ import com.email.sys.entities.User;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Component
-public class LogInController {
+@Scope("prototype")
+public class LogInController implements Initializable {
 
     private final UserService userService;
     private final SceneManager sceneManager;
@@ -45,7 +51,12 @@ public class LogInController {
         return true;
     }
 
-    @FXML
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        loginButton.setOnAction(evt -> login());
+        navigateToSignUpButton.setOnAction(evt -> navigateToSignUp());
+    }
+
     public void login(){
         String email = emailField.getText();
         String password = passwordField.getText();
@@ -57,12 +68,11 @@ public class LogInController {
         if(res.hasError()) {
             ElementsUtils.showErrorLabel(errorLabel, res.getError());
         }else{
-            sessionService.setUser(userService.getForEmail(email));
+            sessionService.setUser(res.getData());
             sceneManager.switchScene(Views.MAIN_PAGE);
         }
     }
 
-    @FXML
     public void navigateToSignUp(){
         sceneManager.switchScene(Views.SIGN_UP);
     }

@@ -1,6 +1,8 @@
 package com.email.sys.controllers;
 
+import com.email.sys.SceneManager;
 import com.email.sys.SpringFXMLLoader;
+import com.email.sys.Views;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
 import com.email.sys.entities.*;
@@ -24,6 +26,8 @@ import java.util.ResourceBundle;
 @Component
 @Scope("prototype")
 public class MainPageController implements Initializable {
+    private final SceneManager sceneManager;
+
     private enum Contents {
         INBOX("/inbox"),
         SEND("/send"),
@@ -50,10 +54,11 @@ public class MainPageController implements Initializable {
     @FXML Button logOutButton;
 
     @Autowired
-    public MainPageController(UserService userService, SpringFXMLLoader loader, SessionService sessionService) {
+    public MainPageController(UserService userService, SpringFXMLLoader loader, SessionService sessionService, SceneManager sceneManager) {
         this.userService = userService;
         this.loader = loader;
         this.sessionService = sessionService;
+        this.sceneManager = sceneManager;
     }
 
     @Override
@@ -61,25 +66,26 @@ public class MainPageController implements Initializable {
         inboxButton.setOnAction(evt -> switchToInbox());
         sendButton.setOnAction(evt -> switchToSend());
         sentButton.setOnAction(evt -> switchToSent());
+        logOutButton.setOnAction(evt -> logOut());
     }
 
-    @FXML
     public void switchToSent(){
         showContent(Contents.SENT);
     }
-
-    @FXML
     public void switchToSend(){
         showContent(Contents.SEND);
     }
-
-    @FXML
     public void switchToInbox(){
         showContent(Contents.INBOX);
     }
-
     private void showContent(Contents content){
         contentArea.getChildren().clear();
         contentArea.getChildren().add(loader.loadFXML(content.path));
     }
+
+    public void logOut(){
+        sessionService.clean();
+        sceneManager.switchScene(Views.LOG_IN);
+    }
+
 }

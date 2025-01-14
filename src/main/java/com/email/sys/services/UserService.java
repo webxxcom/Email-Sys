@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.lang.ref.Cleaner;
+import java.util.Optional;
 
 @Component
 public class UserService implements Cleaner.Cleanable {
@@ -16,22 +17,32 @@ public class UserService implements Cleaner.Cleanable {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("emailSysUnit");
     private final EntityManager em = emf.createEntityManager();
 
-    public User getForEmail(String email) {
+    public Optional<User> getForEmail(String email) {
         TypedQuery<User> q = em.createQuery(
                 "select u from User u where u.email = ?1", User.class
         );
         q.setParameter(1, email);
-
-        User user = q.getSingleResultOrNull();
-        if (user == null) {
-            throw new IllegalArgumentException("An error occurred when finding user with email " + email);
-        }
-        return user;
+        return Optional.ofNullable(q.getSingleResultOrNull());
     }
 
-    public boolean trySignUp(String email, String password){
-        //TODO sign up
-        return true;
+    public Result<User> trySignUp(String email, String password, String confirmPassword){
+        if(!password.equals(confirmPassword)){
+            return Result.ofError("Passwords do not match");
+        }
+        if(emailExists(email)){
+            return Result.ofError("User with such an email already exists");
+        }
+
+        em.getTransaction().begin();
+        User user = em.merge(new User(email, password));
+        em.getTransaction().commit();
+        return Result.of(user);
+    }
+
+    private boolean emailExists(String email) {
+        Query query = em.createQuery("select 1 from User u where u.email = ?1");
+        query.setParameter(1, email);
+        return query.getSingleResultOrNull() != null;
     }
 
     public Result<User> tryLogIn(String email, String password){
@@ -41,17 +52,18 @@ public class UserService implements Cleaner.Cleanable {
         q.setParameter("email", email);
 
         User user = q.getSingleResultOrNull();
-        if(user == null)
-            return Result.error("Such email does not exist");
-
-        if(!user.getPassword().equals(password))
-            return Result.error("Password is incorrect");
-
-        return Result.success(user);
+        if(user == null) {
+            return Result.ofError("Such email does not exist");
+        }
+        if(!user.getPassword().equals(password)) {
+            return Result.ofError("Password is incorrect");
+        }
+        return Result.of(user);
     }
 
     public void sendEmail(User sender, String receiverEmail, String emailText){
-        User receiver = getForEmail(receiverEmail);
+        //TODO check if email exists
+        User receiver = getForEmail(receiverEmail).get();
 
         em.getTransaction().begin();
         Email email = em.merge(new Email(emailText, sender, receiver));

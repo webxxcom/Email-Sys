@@ -2,27 +2,29 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<VBox alignment="CENTER" prefHeight="297.0" prefWidth="393.0" spacing="20" stylesheets="styles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.LogInController">
+<?import javafx.scene.text.Font?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="297.0" prefWidth="393.0" spacing="20"
+      stylesheets="styles.css" xmlns="http://javafx.com/javafx/11.0.14-internal"
+      fx:controller="com.email.sys.controllers.LogInController">
     <VBox alignment="CENTER" prefHeight="214.0" prefWidth="444.0" spacing="20">
         <Label styleClass="header-label" text="User Login">
-         <font>
-            <Font size="18.0" />
-         </font></Label>
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
         <GridPane alignment="CENTER" hgap="10" vgap="10">
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="51.0" styleClass="form-label" text="Email:" />
-            <TextField fx:id="emailField" promptText="Enter email" styleClass="form-field" GridPane.columnIndex="1" />
+            <Label alignment="CENTER" text="Email:" styleClass="form-label" />
+            <TextField fx:id="emailField" promptText="Enter email" styleClass="form-field" GridPane.columnIndex="1"/>
 
-            <Label styleClass="form-label" text="Password:" GridPane.rowIndex="1" />
-            <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label styleClass="form-label" text="Password:" GridPane.rowIndex="1"/>
+            <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="form-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         </GridPane>
 
-      <Label fx:id="errorLabel" managed="false" styleClass="error-message" />
-
-        <VBox alignment="CENTER" prefHeight="86.0" prefWidth="215.0" spacing="10">
-            <Button fx:id="loginButton" onAction="#login" styleClass="primary-button" text="Log In" />
-            <Button fx:id="navigateToSignUpButton" onAction="#navigateToSignUp" styleClass="secondary-button" text="Sign Up" />
+        <Label fx:id="errorLabel" managed="false" styleClass="error-message"/>
+        <VBox alignment="CENTER" spacing="10">
+            <Button fx:id="loginButton" styleClass="primary-button" text="Log In"/>
+            <Button fx:id="navigateToSignUpButton" styleClass="secondary-button" text="Sign Up"/>
         </VBox>
     </VBox>
 </VBox>

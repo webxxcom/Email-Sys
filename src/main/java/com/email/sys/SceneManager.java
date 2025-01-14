@@ -20,7 +20,9 @@ public class SceneManager {
 
     public void switchScene(Views state){
         scenes.computeIfAbsent(state, loader::loadScene);
-        stage.setScene(scenes.get(state));
+
+        Scene scene = scenes.get(state);
+        stage.setScene(scene);
     }
 
     void setStage(Stage stage) {
