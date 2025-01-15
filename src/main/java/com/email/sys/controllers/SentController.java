@@ -1,6 +1,7 @@
 package com.email.sys.controllers;
 
 import com.email.sys.SpringFXMLLoader;
+import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.entities.Email;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
@@ -33,6 +34,7 @@ public class SentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        sentEmails.setCellFactory(new EmailCellFactory());
         sentEmails.setItems(userService.getSent(sessionService.getUser().getId()));
     }
 }

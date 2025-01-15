@@ -36,7 +36,7 @@ public class UserService implements Cleaner.Cleanable {
         em.getTransaction().begin();
         User user = em.merge(new User(email, password));
         em.getTransaction().commit();
-        return Result.of(user);
+        return Result.ofSuccess(user);
     }
 
     private boolean emailExists(String email) {
@@ -58,19 +58,29 @@ public class UserService implements Cleaner.Cleanable {
         if(!user.getPassword().equals(password)) {
             return Result.ofError("Password is incorrect");
         }
-        return Result.of(user);
+        return Result.ofSuccess(user);
     }
 
-    public void sendEmail(User sender, String receiverEmail, String emailText){
-        //TODO check if email exists
-        User receiver = getForEmail(receiverEmail).get();
+    public Result<Email> sendEmail(String header, String emailText, User sender, String receiverEmail){
+        /* User with such email must exist */
+        Optional<User> optionalReceiver = getForEmail(receiverEmail);
+        if(optionalReceiver.isEmpty()){
+            return Result.ofError("User with such email does not exist");
+        }
+        User receiver = optionalReceiver.get();
 
+        /* Can't send empty email */
+        if(emailText.isEmpty()){
+            return Result.ofError("You can't send an email with empty body");
+        }
+
+        /* Persist email */
         em.getTransaction().begin();
-        Email email = em.merge(new Email(emailText, sender, receiver));
+        Email email = em.merge(new Email(header, emailText, sender, receiver));
         em.getTransaction().commit();
-        System.out.println(email);
 
         sender.sendEmail(receiver, email);
+        return Result.ofSuccess(email, "Message was successfully sent");
     }
 
     @Override

@@ -5,3 +5,59 @@
     -fx-padding: 5px;
     -fx-background-radius: 5px;
 }
+
+/* General styling for the VBox */
+.root {
+    -fx-background-color: #f4f4f9; /* Soft background color */
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-font-family: 'Arial', sans-serif;
+}
+
+/* Styling for TextFields and TextArea */
+.text-field, .text-area {
+    -fx-background-color: #ffffff; /* White background for input fields */
+    -fx-border-color: #c0c0c0; /* Light gray border */
+    -fx-border-radius: 5;
+    -fx-padding: 5 10 5 10; /* Inner padding for better usability */
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #aaaaaa; /* Subtle placeholder text color */
+}
+
+.text-area {
+    -fx-min-height: 120px; /* Ensure a larger text area */
+    -fx-border-width: 1.5;
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: #007bff; /* Primary blue color */
+    -fx-text-fill: white; /* White text on the button */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Error Label Styling */
+.error-message {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+/* TextField focus color */
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #007bff;
+    -fx-border-width: 2;
+}
+
+/* Button on press */
+.button:pressed {
+    -fx-background-color: #004080; /* Even darker blue */
+}

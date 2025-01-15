@@ -3,14 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.23" minHeight="400.0" minWidth="600.0" orientation="VERTICAL" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.InboxController">
-   <TitledPane text="Inbox">
-      <content>
-          <HBox alignment="CENTER" minHeight="72.0" spacing="20">
-              <TextField fx:id="searchBar" promptText="Type keywords" styleClass="search-bar" />
-              <Button fx:id="searchButton" mnemonicParsing="false" styleClass="primary-button" text="Search" />
-          </HBox>
-      </content>
-   </TitledPane>
-   <ListView fx:id="contentInnerPane" styleClass="email-list" />
+<SplitPane dividerPositions="0.23" orientation="VERTICAL" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.InboxController">
+    <TitledPane text="Inbox">
+        <HBox alignment="CENTER" spacing="20">
+            <TextField fx:id="searchBar" promptText="Type keywords" styleClass="search-bar" />
+            <Button fx:id="searchButton" mnemonicParsing="false" styleClass="primary-button" text="Search" />
+        </HBox>
+    </TitledPane>
+    <ListView fx:id="contentInnerPane" styleClass="email-list" />
 </SplitPane>

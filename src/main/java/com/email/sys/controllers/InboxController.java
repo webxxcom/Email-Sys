@@ -1,5 +1,6 @@
 package com.email.sys.controllers;
 
+import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.entities.Email;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
@@ -32,6 +33,7 @@ public class InboxController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        contentInnerPane.setCellFactory(new EmailCellFactory());
         contentInnerPane.setItems(userService.getInbox(sessionService.getUser().getId()));
     }
 }

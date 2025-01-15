@@ -17,7 +17,7 @@ public class SessionService implements Cleaner.Cleanable {
         this.us = us;
 
         //TODO remove brute force
-        this.user = us.getForEmail("em").get();
+        //this.user = us.getForEmail("em").get();
     }
 
     public User getUser() {

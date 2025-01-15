@@ -50,9 +50,9 @@ public class SignUpController implements Initializable {
     public void tryRegisterUser(){
         Result<User> result = userService.trySignUp(emailField.getText(), passwordField.getText(), confirmPasswordField.getText());
         if(result.hasError()){
-            ElementsUtils.showErrorLabel(errorLabel, result.getError());
+            ElementsUtils.showLabel(errorLabel, result.getMessage());
         } else{
-            sceneManager.switchScene(Views.MAIN_PAGE);
+            sceneManager.switchScene(Views.LOG_IN);
         }
     }
 }

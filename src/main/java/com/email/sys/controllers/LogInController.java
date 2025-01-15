@@ -40,14 +40,14 @@ public class LogInController implements Initializable {
 
     private boolean validateCredentials(String email, String password){
         if(email.isEmpty()){
-            ElementsUtils.showErrorLabel(errorLabel, "Please fill the email");
+            ElementsUtils.showLabel(errorLabel, "Please fill the email");
             return false;
         }
         if(password.isEmpty()){
-            ElementsUtils.showErrorLabel(errorLabel, "Please fill the password");
+            ElementsUtils.showLabel(errorLabel, "Please fill the password");
             return false;
         }
-        ElementsUtils.hideErrorLabel(errorLabel);
+        ElementsUtils.hideNode(errorLabel);
         return true;
     }
 
@@ -66,7 +66,7 @@ public class LogInController implements Initializable {
 
         Result<User> res = userService.tryLogIn(email, password);
         if(res.hasError()) {
-            ElementsUtils.showErrorLabel(errorLabel, res.getError());
+            ElementsUtils.showLabel(errorLabel, res.getMessage());
         }else{
             sessionService.setUser(res.getData());
             sceneManager.switchScene(Views.MAIN_PAGE);

@@ -4,16 +4,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="BOTTOM_RIGHT" prefHeight="310.0" prefWidth="430.0" spacing="20"
-      xmlns="http://javafx.com/javafx/11.0.14-internal"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.email.sys.controllers.SendController">
+<VBox alignment="BOTTOM_RIGHT" spacing="15" styleClass="root" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.SendController">
     <padding>
-        <Insets left="10" right="10" bottom="10" top="10" />
+        <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
 
-    <TextField fx:id="recipientGmail" promptText="To:" />
-    <TextArea fx:id="emailText" prefHeight="200.0" prefWidth="200.0" promptText="Enter your text here" />
-    <Button fx:id="sendButton" contentDisplay="CENTER"
-            styleClass="primary-button" text="Send"/>
+    <HBox alignment="CENTER">
+        <Label fx:id="errorLabel" managed="false" styleClass="error-message" />
+        <Label fx:id="successLabel" managed="false" styleClass="success-message" />
+    </HBox>
+
+    <TextField fx:id="recipientGmail" promptText="Recipient Email" styleClass="text-field" />
+    <TextField fx:id="headerField" promptText="Email Subject" styleClass="text-field" />
+    <TextArea fx:id="emailText" promptText="Write your message here..." styleClass="text-area" wrapText="true" />
+
+    <Button fx:id="sendButton" styleClass="button" text="Send Email" />
 </VBox>

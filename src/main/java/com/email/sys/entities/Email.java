@@ -10,6 +10,9 @@ public class Email {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(nullable = false)
+    String header;
+
     @Column(nullable = false, updatable = false)
     String text;
 
@@ -26,7 +29,12 @@ public class Email {
     }
 
     public Email(String text, User sender, User receiver) {
+        this("", text, sender, receiver);
+    }
+
+    public Email(String header, String text, User sender, User receiver){
         this.text = text;
+        this.header = header;
         this.sender = sender;
         this.receiver = receiver;
     }
@@ -42,6 +50,22 @@ public class Email {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public LocalDateTime getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(LocalDateTime sendDate) {
+        this.sendDate = sendDate;
     }
 
     @Override

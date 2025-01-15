@@ -1,35 +1,39 @@
 package com.email.sys;
 
 public class Result<T> {
-    private final String error;
+    private final String message;
     private final T data;
 
-    private Result(String error, T data) {
-        this.error = error;
+    private Result(String message, T data) {
+        this.message = message;
         this.data = data;
     }
 
-    public static <E> Result<E> ofError(String error){
-        return new Result<>(error, null);
+    public static <E> Result<E> ofError(String message){
+        return new Result<>(message, null);
     }
 
-    public static <E> Result<E> of(E data){
+    public static <E> Result<E> ofSuccess(E data){
         return new Result<>(null, data);
     }
 
-    public boolean isSuccess(){
-        return error == null;
+    public static <E> Result<E> ofSuccess(E data, String message){
+        return new Result<>(message, data);
     }
 
-    public String getError(){
-        return error;
+    public boolean hasError() {
+        return data == null;
+    }
+
+    public boolean isSuccess(){
+        return !hasError();
+    }
+
+    public String getMessage(){
+        return message;
     }
 
     public T getData(){
         return data;
-    }
-
-    public boolean hasError() {
-        return error != null;
     }
 }

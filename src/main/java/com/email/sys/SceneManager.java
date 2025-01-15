@@ -9,7 +9,6 @@ import java.util.EnumMap;
 
 @Component
 public class SceneManager {
-    private final EnumMap<Views, Scene> scenes = new EnumMap<>(Views.class);
     private final SpringFXMLLoader loader;
     private Stage stage;
 
@@ -19,9 +18,7 @@ public class SceneManager {
     }
 
     public void switchScene(Views state){
-        scenes.computeIfAbsent(state, loader::loadScene);
-
-        Scene scene = scenes.get(state);
+        Scene scene = loader.loadScene(state);
         stage.setScene(scene);
     }
 

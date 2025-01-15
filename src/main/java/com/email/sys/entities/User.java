@@ -2,6 +2,8 @@ package com.email.sys.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +17,9 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, updatable = false)
+    LocalDate createdOn;
 
     @OneToMany(mappedBy = "sender")
     private List<Email> sentEmails;
@@ -31,11 +36,17 @@ public class User {
         this.password = password;
     }
 
+    @PrePersist
+    private void beforePersisting() {
+        this.createdOn = LocalDateTime.now().toLocalDate();
+
+    }
+
     public void sendEmail(User to, Email email){
         Objects.requireNonNull(email);
         Objects.requireNonNull(to);
 
-        this.sentEmails.add(email);
+        sentEmails.add(email);
         to.inboxEmails.add(email);
     }
 
