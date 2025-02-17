@@ -5,14 +5,9 @@ import com.email.sys.SpringFXMLLoader;
 import com.email.sys.Views;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
-import com.email.sys.entities.*;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +15,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
@@ -31,7 +25,8 @@ public class MainPageController implements Initializable {
     private enum Contents {
         INBOX("/inbox"),
         SEND("/send"),
-        SENT("/sent");
+        SENT("/sent"),
+        SETTINGS("/settings");
 
         final String path;
 
@@ -44,13 +39,12 @@ public class MainPageController implements Initializable {
     private final UserService userService;
     private final SessionService sessionService;
 
-    @FXML
-    Pane contentArea;
+    @FXML Pane contentArea;
     @FXML VBox navigationPanel;
-
     @FXML Button inboxButton;
     @FXML Button sendButton;
     @FXML Button sentButton;
+    @FXML Button settingsButton;
     @FXML Button logOutButton;
 
     @Autowired
@@ -66,8 +60,10 @@ public class MainPageController implements Initializable {
         inboxButton.setOnAction(evt -> switchToInbox());
         sendButton.setOnAction(evt -> switchToSend());
         sentButton.setOnAction(evt -> switchToSent());
+        settingsButton.setOnAction(evt -> switchToSettings());
         logOutButton.setOnAction(evt -> logOut());
     }
+
 
     public void switchToSent(){
         showContent(Contents.SENT);
@@ -78,6 +74,10 @@ public class MainPageController implements Initializable {
     public void switchToInbox(){
         showContent(Contents.INBOX);
     }
+    public void switchToSettings() {
+        showContent(Contents.SETTINGS);
+    }
+
     private void showContent(Contents content){
         contentArea.getChildren().clear();
         contentArea.getChildren().add(loader.loadFXML(content.path));

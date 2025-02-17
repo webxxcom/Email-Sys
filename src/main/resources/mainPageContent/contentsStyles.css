@@ -14,6 +14,15 @@
     -fx-font-family: 'Arial', sans-serif;
 }
 
+.email-header {
+    -fx-padding: 10px;
+    -fx-background-color: #f0f0f0;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-spacing: 15px;
+    -fx-alignment: center-left;
+}
+
 /* Styling for TextFields and TextArea */
 .text-field, .text-area {
     -fx-background-color: #ffffff; /* White background for input fields */

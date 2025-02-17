@@ -1,6 +1,6 @@
 package com.email.sys;
 
-import com.email.sys.controllers.Resetable;
+import com.email.sys.controllers.Resettable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
@@ -24,7 +24,7 @@ public class ElementsUtils {
         showCorrespondingLabel(result, success,fail, null);
     }
 
-    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail, Resetable resetable){
+    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail, Resettable resettable){
         String message = result.getMessage();
         if(result.hasError()){
             hideNode(success);
@@ -33,8 +33,8 @@ public class ElementsUtils {
             hideNode(fail);
             showLabel(success, message);
 
-            if(resetable != null)
-                resetable.reset();
+            if(resettable != null)
+                resettable.reset();
         }
     }
 

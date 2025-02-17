@@ -16,6 +16,9 @@ public class Email {
     @Column(nullable = false, updatable = false)
     String text;
 
+    @Column(nullable = false)
+    Boolean isStarred;
+
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME(0)")
     LocalDateTime sendDate;
 
@@ -42,6 +45,7 @@ public class Email {
     @PrePersist
     private void beforePersisting(){
         this.sendDate = LocalDateTime.now();
+        this.isStarred = false;
     }
 
     public String getText() {
@@ -68,6 +72,18 @@ public class Email {
         this.sendDate = sendDate;
     }
 
+    public boolean isStarred() {
+        return isStarred;
+    }
+
+    public void setStarred(Boolean starred) {
+        isStarred = starred;
+    }
+
+    public void toggleStarred(){
+        setStarred(!isStarred);
+    }
+
     @Override
     public String toString() {
         return "Email{" +
@@ -88,5 +104,9 @@ public class Email {
     @Override
     public int hashCode() {
         return Objects.hash(id, text, sender, receiver);
+    }
+
+    public User getSender() {
+        return sender;
     }
 }

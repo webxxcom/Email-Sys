@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.17" prefHeight="445.0" prefWidth="750.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.MainPageController">
+<SplitPane dividerPositions="0.17" prefHeight="445.0" prefWidth="750.0"
+           stylesheets="@styles.css"
+           xmlns="http://javafx.com/javafx/11.0.14-internal"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.email.sys.controllers.MainPageController">
 
-    <SplitPane dividerPositions="0.8" maxWidth="150.0" minWidth="150.0" orientation="VERTICAL" prefWidth="150.0">
-        <VBox fx:id="navigationPanel" alignment="TOP_CENTER" prefHeight="405.0" prefWidth="131.0" spacing="15" styleClass="sidebar">
+    <SplitPane dividerPositions="0.8" maxWidth="150.0" minWidth="150.0" orientation="VERTICAL" prefWidth="150.0" SplitPane.resizableWithParent="false">
+        <VBox fx:id="navigationPanel" alignment="TOP_CENTER" prefHeight="405.0" prefWidth="131.0" styleClass="sidebar">
             <Button fx:id="inboxButton" prefWidth="100.0" styleClass="sidebar-button" text="Inbox" />
             <Button fx:id="sentButton" prefWidth="100.0" styleClass="sidebar-button" text="Sent" />
             <Button fx:id="sendButton" prefWidth="100.0" styleClass="sidebar-button" text="Send" />
         </VBox>
 
         <VBox alignment="CENTER" maxHeight="70.0" spacing="10" styleClass="logout-container">
+            <Button fx:id="settingsButton" prefWidth="100.0" styleClass="sidebar-button" text="Settings" />
+            <Separator />
             <Button fx:id="logOutButton" styleClass="logout-button" text="Log Out" />
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
         </VBox>
     </SplitPane>
 
-    <VBox fx:id="contentArea" alignment="CENTER" styleClass="content-area" />
+    <VBox fx:id="contentArea" styleClass="content-area" />
 </SplitPane>

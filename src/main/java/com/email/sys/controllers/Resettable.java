@@ -1,5 +1,5 @@
 package com.email.sys.controllers;
 
-public interface Resetable {
+public interface Resettable {
     void reset();
 }

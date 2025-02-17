@@ -10,5 +10,5 @@
             <Button fx:id="searchButton" mnemonicParsing="false" styleClass="primary-button" text="Search" />
         </HBox>
     </TitledPane>
-    <ListView fx:id="contentInnerPane" styleClass="email-list" />
+    <ListView fx:id="emails" styleClass="email-list" />
 </SplitPane>

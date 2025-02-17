@@ -25,6 +25,17 @@ public class UserService implements Cleaner.Cleanable {
         return Optional.ofNullable(q.getSingleResultOrNull());
     }
 
+    public Result<Email> toggleEmailStar(Email email){
+        try {
+            em.getTransaction().begin();
+            email.toggleStarred();
+            em.getTransaction().commit();
+            return Result.ofSuccess(email);
+        } catch (Exception e) {
+            return Result.ofError("Error toggling email star");
+        }
+    }
+
     public Result<User> trySignUp(String email, String password, String confirmPassword){
         if(!password.equals(confirmPassword)){
             return Result.ofError("Passwords do not match");
@@ -83,6 +94,18 @@ public class UserService implements Cleaner.Cleanable {
         return Result.ofSuccess(email, "Message was successfully sent");
     }
 
+    public Result<User> saveSettings(User user){
+        try {
+            em.getTransaction().begin();
+            Result<User> res = Result.ofSuccess(em.merge(user), "Settings were successfully saved");
+            em.getTransaction().commit();
+
+            return res;
+        } catch (Exception e) {
+            return Result.ofError("Settings were not saved because of some error");
+        }
+    }
+
     @Override
     public void clean() {
         em.close();
@@ -102,4 +125,12 @@ public class UserService implements Cleaner.Cleanable {
 
         return FXCollections.observableArrayList(q.getResultList());
     }
+
+        public ObservableList<Email> getFilteredInbox(Long id, String filter) {
+            Query q = em.createQuery("select em from Email em where em.receiver.id=?1 and em.text like ?2");
+            q.setParameter(1, id);
+            q.setParameter(2, "%" + filter + "%");
+
+            return FXCollections.observableArrayList(q.getResultList());
+        }
 }

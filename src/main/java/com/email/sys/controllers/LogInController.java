@@ -4,12 +4,14 @@ import com.email.sys.*;
 import com.email.sys.entities.User;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -55,6 +57,16 @@ public class LogInController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginButton.setOnAction(evt -> login());
         navigateToSignUpButton.setOnAction(evt -> navigateToSignUp());
+        passwordField.setOnKeyPressed(evt -> {
+            if(evt.getCode().equals(KeyCode.ENTER)){
+                login();
+            }
+        });
+        emailField.setOnKeyPressed(evt->{
+            if(evt.getCode().equals(KeyCode.ENTER)){
+                passwordField.requestFocus();
+            }
+        });
     }
 
     public void login(){

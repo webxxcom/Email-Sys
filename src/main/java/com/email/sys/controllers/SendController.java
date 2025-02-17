@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class SendController implements Initializable, Resetable {
+public class SendController implements Initializable, Resettable {
     SessionService sessionService;
     UserService userService;
 

@@ -5,8 +5,6 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.EnumMap;
-
 @Component
 public class SceneManager {
     private final SpringFXMLLoader loader;
@@ -20,9 +18,14 @@ public class SceneManager {
     public void switchScene(Views state){
         Scene scene = loader.loadScene(state);
         stage.setScene(scene);
+        stage.centerOnScreen();
     }
 
     void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

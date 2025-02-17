@@ -15,9 +15,6 @@ public class SessionService implements Cleaner.Cleanable {
     @Autowired
     public SessionService(UserService us) {
         this.us = us;
-
-        //TODO remove brute force
-        //this.user = us.getForEmail("em").get();
     }
 
     public User getUser() {

@@ -34,7 +34,7 @@ public class SentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        sentEmails.setCellFactory(new EmailCellFactory());
+        sentEmails.setCellFactory(new EmailCellFactory(sessionService));
         sentEmails.setItems(userService.getSent(sessionService.getUser().getId()));
     }
 }
