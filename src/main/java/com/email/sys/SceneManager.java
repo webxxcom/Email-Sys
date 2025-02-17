@@ -1,5 +1,6 @@
 package com.email.sys;
 
+import com.email.sys.loaders.SpringFXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
-package com.email.sys;
+package com.email.sys.loaders;
 
+import com.email.sys.Views;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -21,11 +22,11 @@ public class SpringFXMLLoader {
 
     public Scene loadScene(Views view) {
         try {
-            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(SpringFXMLLoader.class.getResource(view.path)));
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(SpringFXMLLoader.class.getResource(view.name())));
             loader.setControllerFactory(springContext::getBean);
             return new Scene(loader.load());
         } catch (IOException ex) {
-            throw new IllegalArgumentException("Error loading FXML file: " + view.path, ex);
+            throw new IllegalArgumentException("Error loading FXML file: " + view.name(), ex);
         }
     }
 

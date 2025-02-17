@@ -2,6 +2,7 @@ package com.email.sys.controllers;
 
 import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.entities.Email;
+import com.email.sys.loaders.ContentViewLoader;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.context.annotation.Scope;
@@ -27,6 +29,7 @@ import java.util.ResourceBundle;
 @Scope("prototype")
 public class InboxController implements Initializable {
 
+    private final ContentViewLoader contentViewLoader;
     //Singletons
     UserService userService;
     SessionService sessionService;
@@ -36,11 +39,13 @@ public class InboxController implements Initializable {
     @FXML public ListView<Email> emails;
     @FXML public TextField searchBar;
     @FXML public Button searchButton;
+    @FXML public Pane contentPane;
 
     @Autowired
-    public InboxController(UserService userService, SessionService sessionService) {
+    public InboxController(UserService userService, SessionService sessionService, ContentViewLoader contentViewLoader) {
         this.userService = userService;
         this.sessionService = sessionService;
+        this.contentViewLoader = contentViewLoader;
     }
 
     @Override
@@ -63,7 +68,7 @@ public class InboxController implements Initializable {
 
     void openEmail(MouseEvent mouseEvent){
         if(mouseEvent.getClickCount() == 2){
-
+            contentViewLoader.loadContent(contentPane, ContentViewLoader.Contents.EMAIL);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.email.sys.controllers;
 
 import com.email.sys.SceneManager;
-import com.email.sys.SpringFXMLLoader;
+import com.email.sys.loaders.SpringFXMLLoader;
 import com.email.sys.Views;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
