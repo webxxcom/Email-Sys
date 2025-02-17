@@ -21,7 +21,7 @@ public class JavaFxApplication extends Application {
     public void start(Stage primaryStage) {
         sceneManager.setStage(primaryStage);
 
-        sceneManager.switchScene(Views.MAIN_PAGE);
+        sceneManager.switchScene(Views.LOG_IN);
         primaryStage.setTitle("Email");
         primaryStage.show();
     }

@@ -4,8 +4,10 @@ import com.email.sys.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.ref.Cleaner;
+
 @Component
-public class SessionService {
+public class SessionService implements Cleaner.Cleanable {
 
     User user;
     UserService us;
@@ -13,7 +15,6 @@ public class SessionService {
     @Autowired
     public SessionService(UserService us) {
         this.us = us;
-        this.user = us.getForEmail("em");
     }
 
     public User getUser() {
@@ -22,5 +23,10 @@ public class SessionService {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public void clean() {
+        user = null;
     }
 }

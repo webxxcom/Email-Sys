@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.23" orientation="VERTICAL" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.SentController">
+   <TitledPane text="Sent messages">
+          <HBox alignment="CENTER" spacing="20">
+              <TextField fx:id="searchBar" promptText="Type keywords" styleClass="search-bar" />
+              <Button fx:id="searchButton" mnemonicParsing="false" styleClass="primary-button" text="Search" />
+          </HBox>
+   </TitledPane>
+    <ListView fx:id="sentEmails" styleClass="email-list" />
+</SplitPane>

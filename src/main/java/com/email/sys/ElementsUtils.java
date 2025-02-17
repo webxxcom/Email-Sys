@@ -1,5 +1,7 @@
 package com.email.sys;
 
+import com.email.sys.controllers.Resettable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 
 public class ElementsUtils {
@@ -7,13 +9,33 @@ public class ElementsUtils {
     private ElementsUtils() {
     }
 
-    public static void showErrorLabel(Label label, String error){
+    public static void showLabel(Label label, String message){
+        label.setVisible(true);
         label.setManaged(true);
-        label.setText(error);
+        label.setText(message);
     }
 
-    public static void hideErrorLabel(Label label){
-        label.setManaged(false);
+    public static void hideNode(Node node){
+        node.setVisible(false);
+        node.setManaged(false);
+    }
+
+    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail){
+        showCorrespondingLabel(result, success,fail, null);
+    }
+
+    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail, Resettable resettable){
+        String message = result.getMessage();
+        if(result.hasError()){
+            hideNode(success);
+            showLabel(fail, message);
+        }else{
+            hideNode(fail);
+            showLabel(success, message);
+
+            if(resettable != null)
+                resettable.reset();
+        }
     }
 
 }

@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.lang.ref.Cleaner;
+import java.util.Optional;
 
 @Component
 public class UserService implements Cleaner.Cleanable {
@@ -16,22 +17,43 @@ public class UserService implements Cleaner.Cleanable {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("emailSysUnit");
     private final EntityManager em = emf.createEntityManager();
 
-    public User getForEmail(String email) {
+    public Optional<User> getForEmail(String email) {
         TypedQuery<User> q = em.createQuery(
                 "select u from User u where u.email = ?1", User.class
         );
         q.setParameter(1, email);
-
-        User user = q.getSingleResultOrNull();
-        if (user == null) {
-            throw new IllegalArgumentException("An error occurred when finding user with email " + email);
-        }
-        return user;
+        return Optional.ofNullable(q.getSingleResultOrNull());
     }
 
-    public boolean trySignUp(String email, String password){
-        //TODO sign up
-        return true;
+    public Result<Email> toggleEmailStar(Email email){
+        try {
+            em.getTransaction().begin();
+            email.toggleStarred();
+            em.getTransaction().commit();
+            return Result.ofSuccess(email);
+        } catch (Exception e) {
+            return Result.ofError("Error toggling email star");
+        }
+    }
+
+    public Result<User> trySignUp(String email, String password, String confirmPassword){
+        if(!password.equals(confirmPassword)){
+            return Result.ofError("Passwords do not match");
+        }
+        if(emailExists(email)){
+            return Result.ofError("User with such an email already exists");
+        }
+
+        em.getTransaction().begin();
+        User user = em.merge(new User(email, password));
+        em.getTransaction().commit();
+        return Result.ofSuccess(user);
+    }
+
+    private boolean emailExists(String email) {
+        Query query = em.createQuery("select 1 from User u where u.email = ?1");
+        query.setParameter(1, email);
+        return query.getSingleResultOrNull() != null;
     }
 
     public Result<User> tryLogIn(String email, String password){
@@ -41,28 +63,47 @@ public class UserService implements Cleaner.Cleanable {
         q.setParameter("email", email);
 
         User user = q.getSingleResultOrNull();
-        if(user == null)
-            return Result.error("Such email does not exist");
-
-        if(!user.getPassword().equals(password))
-            return Result.error("Password is incorrect");
-
-        return Result.success(user);
+        if(user == null) {
+            return Result.ofError("Such email does not exist");
+        }
+        if(!user.getPassword().equals(password)) {
+            return Result.ofError("Password is incorrect");
+        }
+        return Result.ofSuccess(user);
     }
 
-    public void sendEmail(User from, String to, Email email){
-        from.sendEmail(email);
+    public Result<Email> sendEmail(String header, String emailText, User sender, String receiverEmail){
+        /* User with such email must exist */
+        Optional<User> optionalReceiver = getForEmail(receiverEmail);
+        if(optionalReceiver.isEmpty()){
+            return Result.ofError("User with such email does not exist");
+        }
+        User receiver = optionalReceiver.get();
 
-        User recipient = getForEmail(to);
-        recipient.receiveEmail
+        /* Can't send empty email */
+        if(emailText.isEmpty()){
+            return Result.ofError("You can't send an email with empty body");
+        }
 
+        /* Persist email */
         em.getTransaction().begin();
-        Query q = em.createQuery("insert into Email(text) values(?1)");
-        q.setParameter(1, email.getText());
+        Email email = em.merge(new Email(header, emailText, sender, receiver));
+        em.getTransaction().commit();
 
-        em.persist();
+        sender.sendEmail(receiver, email);
+        return Result.ofSuccess(email, "Message was successfully sent");
+    }
 
+    public Result<User> saveSettings(User user){
+        try {
+            em.getTransaction().begin();
+            Result<User> res = Result.ofSuccess(em.merge(user), "Settings were successfully saved");
+            em.getTransaction().commit();
 
+            return res;
+        } catch (Exception e) {
+            return Result.ofError("Settings were not saved because of some error");
+        }
     }
 
     @Override
@@ -77,4 +118,19 @@ public class UserService implements Cleaner.Cleanable {
 
         return FXCollections.observableArrayList(q.getResultList());
     }
+
+    public ObservableList<Email> getSent(Long id) {
+        Query q = em.createQuery("select u.sentEmails from User u where id = ?1");
+        q.setParameter(1, id);
+
+        return FXCollections.observableArrayList(q.getResultList());
+    }
+
+        public ObservableList<Email> getFilteredInbox(Long id, String filter) {
+            Query q = em.createQuery("select em from Email em where em.receiver.id=?1 and em.text like ?2");
+            q.setParameter(1, id);
+            q.setParameter(2, "%" + filter + "%");
+
+            return FXCollections.observableArrayList(q.getResultList());
+        }
 }
