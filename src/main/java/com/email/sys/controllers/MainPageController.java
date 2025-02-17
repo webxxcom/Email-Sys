@@ -81,6 +81,7 @@ public class MainPageController implements Initializable {
     private void showContent(Contents content){
         contentArea.getChildren().clear();
         contentArea.getChildren().add(loader.loadFXML(content.path));
+
     }
 
     public void logOut(){
