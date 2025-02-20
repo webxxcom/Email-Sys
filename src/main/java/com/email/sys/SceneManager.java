@@ -1,6 +1,6 @@
 package com.email.sys;
 
-import com.email.sys.loaders.SpringFXMLLoader;
+import com.email.sys.loaders.SpringSceneLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SceneManager {
-    private final SpringFXMLLoader loader;
+    private final SpringSceneLoader springSceneLoader;
     private Stage stage;
 
     @Autowired
-    public SceneManager(SpringFXMLLoader loader) {
-        this.loader = loader;
+    public SceneManager(SpringSceneLoader springSceneLoader) {
+        this.springSceneLoader = springSceneLoader;
     }
 
     public void switchScene(Views state){
-        Scene scene = loader.loadScene(state);
+        Scene scene = springSceneLoader.load(state);
         stage.setScene(scene);
         stage.centerOnScreen();
     }

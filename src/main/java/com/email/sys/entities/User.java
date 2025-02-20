@@ -147,11 +147,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", createdOn=" + createdOn +
-                ", avatar=" + Arrays.toString(avatar) +
-                ", sentEmails=" + sentEmails +
-                ", inboxEmails=" + inboxEmails +
                 '}';
     }
 }

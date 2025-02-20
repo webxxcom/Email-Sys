@@ -1,18 +1,17 @@
 package com.email.sys.loaders;
 
-import com.email.sys.Views;
+import com.email.sys.controllers.DataInjectable;
+import jakarta.annotation.Nullable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.Objects;
 
 @Component
-public class SpringFXMLLoader {
+public class SpringFXMLLoader implements ConfigurableLoader<Node, String> {
     ConfigurableApplicationContext springContext;
 
     @Autowired
@@ -20,23 +19,27 @@ public class SpringFXMLLoader {
         this.springContext = springContext;
     }
 
-    public Scene loadScene(Views view) {
-        try {
-            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(SpringFXMLLoader.class.getResource(view.name())));
-            loader.setControllerFactory(springContext::getBean);
-            return new Scene(loader.load());
-        } catch (IOException ex) {
-            throw new IllegalArgumentException("Error loading FXML file: " + view.name(), ex);
-        }
-    }
-
-    public Node loadFXML(String fileName){
+    @Override
+    public <T> Node load(String fileName, @Nullable T data){
         try {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(SpringFXMLLoader.class.getResource(fileName)));
             loader.setControllerFactory(springContext::getBean);
-            return loader.load();
+
+            Node load = loader.load();
+
+            if(data != null) {
+                try {
+                    DataInjectable<T> di = loader.getController();
+                    di.inject(data);
+                    di.init();
+                } catch (Exception e) {
+                    throw new LoadingException("The controller for the " + fileName + " is not injectable", e);
+                }
+            }
+
+            return load;
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Error loading FXML file: " + fileName, ex);
+            throw new LoadingException("Error loading FXML file: " + fileName, ex);
         }
     }
 }

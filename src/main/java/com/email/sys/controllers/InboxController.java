@@ -1,23 +1,20 @@
 package com.email.sys.controllers;
 
+import com.email.sys.Contents;
 import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.entities.Email;
-import com.email.sys.loaders.ContentViewLoader;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
+import com.email.sys.trackers.ContentManager;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +26,7 @@ import java.util.ResourceBundle;
 @Scope("prototype")
 public class InboxController implements Initializable {
 
-    private final ContentViewLoader contentViewLoader;
+    private final ContentManager contentManager;
     //Singletons
     UserService userService;
     SessionService sessionService;
@@ -39,23 +36,30 @@ public class InboxController implements Initializable {
     @FXML public ListView<Email> emails;
     @FXML public TextField searchBar;
     @FXML public Button searchButton;
-    @FXML public Pane contentPane;
 
     @Autowired
-    public InboxController(UserService userService, SessionService sessionService, ContentViewLoader contentViewLoader) {
+    public InboxController(UserService userService, SessionService sessionService, ContentManager contentManager) {
         this.userService = userService;
         this.sessionService = sessionService;
-        this.contentViewLoader = contentViewLoader;
+        this.contentManager = contentManager;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        emails.setCellFactory(new EmailCellFactory(sessionService, this::openEmail));
-        emails.setItems(userService.getInbox(sessionService.getUser().getId()));
+        emails.setCellFactory(new EmailCellFactory());
+        emails.setOnMouseClicked(this::openEmail);
+        emails.setItems(FXCollections.observableArrayList(sessionService.getUser().getInboxEmails()));
         searchButton.setOnAction(this::filterInbox);
     }
 
-
+    private void openEmail(MouseEvent mouseEvent) {
+        if(mouseEvent.getClickCount() == 2){
+            Email em = emails.getSelectionModel().getSelectedItem();
+            if(em != null) {
+                contentManager.proceedTo(Contents.EMAIL, em);
+            }
+        }
+    }
 
     void filterInbox(ActionEvent actionEvent) {
         String filter = searchBar.getText();
@@ -64,11 +68,5 @@ public class InboxController implements Initializable {
 
         emails.setItems(userService.getFilteredInbox(sessionService.getUser().getId(), filter));
         previousFilter = filter;
-    }
-
-    void openEmail(MouseEvent mouseEvent){
-        if(mouseEvent.getClickCount() == 2){
-            contentViewLoader.loadContent(contentPane, ContentViewLoader.Contents.EMAIL);
-        }
     }
 }

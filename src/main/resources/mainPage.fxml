@@ -23,5 +23,5 @@
         </VBox>
     </SplitPane>
 
-    <VBox fx:id="contentArea" styleClass="content-area" />
+    <VBox fx:id="contentPane" styleClass="content-area" />
 </SplitPane>

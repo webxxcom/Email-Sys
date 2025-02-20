@@ -2,13 +2,11 @@ package com.email.sys.cell.factories;
 
 import com.email.sys.converters.ImageConverter;
 import com.email.sys.entities.Email;
-import com.email.sys.services.SessionService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -19,34 +17,21 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
-import javafx.event.ActionEvent;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.function.Consumer;
 
-@Component
 public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Email>> {
-
-    SessionService sessionService;
-    Consumer<MouseEvent> mouseDoubleClickAction;
-
-    public EmailCellFactory(SessionService sessionService, Consumer<MouseEvent> mouseDoubleClickAction) {
-        this.sessionService = sessionService;
-        this.mouseDoubleClickAction = mouseDoubleClickAction;
-    }
-
     @Override
     public ListCell<Email> call(ListView<Email> emailListView) {
-        return new ListCell<>(){
+        return new ListCell<>() {
             private static final String ARIAL = "Arial";
             private static final int MAX_TEXT_LENGTH = 100;
 
-            private Label getHeaderLabel(Email email){
+            private Label getHeaderLabel(Email email) {
                 Label headerLabel = new Label(email.getHeader());
-                headerLabel.setFont(Font.font(ARIAL,  FontWeight.BOLD, 14));
+                headerLabel.setFont(Font.font(ARIAL, FontWeight.BOLD, 14));
                 headerLabel.setTextFill(
-                        sessionService.getUser().getId().equals(email.getSender().getId())
+                        email.getReceiver().getId().equals(email.getSender().getId())
                                 ? Color.RED
                                 : Color.DARKBLUE);
                 return headerLabel;
@@ -63,13 +48,13 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 return textLabel;
             }
 
-            private Label getDateLabel(Email email){
+            private Label getDateLabel(Email email) {
                 Label dateLabel;
 
                 LocalDateTime emailSendDate = email.getSendDate();
-                if(emailSendDate.isBefore(LocalDateTime.now().minusDays(1))){
+                if (emailSendDate.isBefore(LocalDateTime.now().minusDays(1))) {
                     dateLabel = new Label(emailSendDate.toLocalDate().toString());
-                } else{
+                } else {
                     dateLabel = new Label(emailSendDate.toString().replace('T', ' '));
                 }
                 dateLabel.setFont(Font.font(ARIAL, FontPosture.ITALIC, 12));
@@ -77,19 +62,19 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 return dateLabel;
             }
 
-            private Circle getAvatar(Email email){
+            private Circle getAvatar(Email email) {
                 Circle avatar = new Circle(20, Color.GRAY);
                 avatar.setStroke(Color.DARKBLUE);
                 avatar.setStrokeWidth(2);
 
                 byte[] avatarBytes = email.getSender().getAvatarBytes();
-                if(avatarBytes != null)
+                if (avatarBytes != null)
                     avatar.setFill(new ImagePattern(ImageConverter.fromBytesToImage(avatarBytes)));
 
                 return avatar;
             }
 
-            private Label getStarLabel(Email email){
+            private Label getStarLabel(Email email) {
                 Label starLabel = new Label(email.isStarred() ? "★" : "☆");
                 starLabel.setFont(Font.font(ARIAL, 16));
                 starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
@@ -101,7 +86,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 return starLabel;
             }
 
-            private VBox getContentBox(Email email){
+            private VBox getContentBox(Email email) {
                 VBox contentBox = new VBox(5);
                 contentBox.setAlignment(Pos.CENTER_LEFT);
                 HBox.setHgrow(contentBox, Priority.ALWAYS);
@@ -131,13 +116,6 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 if (empty || email == null) {
                     setGraphic(null);
                 } else {
-                    setOnMouseClicked(evt -> {
-                        mouseDoubleClickAction.accept(evt);
-                        if(evt.getClickCount() == 2) {
-                            System.out.println(email);
-                        }
-                    });
-
                     setGraphic(getCellLayout(email));
                 }
             }

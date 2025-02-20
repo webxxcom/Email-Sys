@@ -4,7 +4,6 @@ import com.email.sys.*;
 import com.email.sys.entities.User;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

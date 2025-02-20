@@ -80,6 +80,14 @@ public class Email {
         isStarred = starred;
     }
 
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
     public void toggleStarred(){
         setStarred(!isStarred);
     }

@@ -10,4 +10,8 @@ public enum Views {
     Views(String path) {
         this.path = path + ".fxml";
     }
+
+    public String getPath() {
+        return path;
+    }
 }
