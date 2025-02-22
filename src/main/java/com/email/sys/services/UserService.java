@@ -36,10 +36,7 @@ public class UserService implements Cleaner.Cleanable {
         }
     }
 
-    public Result<User> trySignUp(String email, String password, String confirmPassword) {
-        if (!password.equals(confirmPassword)) {
-            return Result.ofError("Passwords do not match");
-        }
+    public Result<User> trySignUp(String email, String password) {
         if (emailExists(email)) {
             return Result.ofError("User with such an email already exists");
         }
@@ -47,7 +44,7 @@ public class UserService implements Cleaner.Cleanable {
         em.getTransaction().begin();
         User user = em.merge(new User(email, password));
         em.getTransaction().commit();
-        return Result.ofSuccess(user);
+        return Result.ofSuccess(user, "The registration was successful");
     }
 
     private boolean emailExists(String email) {

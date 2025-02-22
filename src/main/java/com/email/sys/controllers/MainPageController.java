@@ -1,13 +1,11 @@
 package com.email.sys.controllers;
 
-import com.email.sys.ContentArea;
 import com.email.sys.Contents;
 import com.email.sys.SceneManager;
-import com.email.sys.loaders.ContentLoader;
 import com.email.sys.Views;
 import com.email.sys.services.SessionService;
-import com.email.sys.services.UserService;
 import com.email.sys.trackers.ContentManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -22,11 +20,8 @@ import java.util.ResourceBundle;
 @Component
 public class MainPageController implements Initializable {
 
-    private final ContentLoader contentLoader;
-    private final UserService userService;
     private final SessionService sessionService;
     private final SceneManager sceneManager;
-    private final ContentArea contentArea;
     private final ContentManager contentManager;
 
     @FXML Pane contentPane;
@@ -38,27 +33,24 @@ public class MainPageController implements Initializable {
     @FXML Button logOutButton;
 
     @Autowired
-    public MainPageController(UserService userService, SessionService sessionService, SceneManager sceneManager, ContentLoader contentLoader, ContentArea contentArea, ContentManager contentManager) {
-        this.userService = userService;
+    public MainPageController(SessionService sessionService, SceneManager sceneManager, ContentManager contentManager) {
         this.sessionService = sessionService;
         this.sceneManager = sceneManager;
-        this.contentLoader = contentLoader;
-        this.contentArea = contentArea;
         this.contentManager = contentManager;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        contentArea.setContentPane(contentPane);
+        contentManager.getContentArea().setContentPane(contentPane);
 
         inboxButton.setOnAction(evt -> contentManager.proceedTo(Contents.INBOX));
         sendButton.setOnAction(evt -> contentManager.proceedTo(Contents.SEND));
         sentButton.setOnAction(evt -> contentManager.proceedTo(Contents.SENT));
         settingsButton.setOnAction(evt -> contentManager.proceedTo(Contents.SETTINGS));
-        logOutButton.setOnAction(evt -> logOut());
+        logOutButton.setOnAction(this::logOut);
     }
 
-    public void logOut(){
+    public void logOut(ActionEvent actionEvent){
         sessionService.clean();
         sceneManager.switchScene(Views.LOG_IN);
     }

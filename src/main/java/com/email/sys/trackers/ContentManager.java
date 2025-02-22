@@ -3,7 +3,6 @@ package com.email.sys.trackers;
 import com.email.sys.ContentArea;
 import com.email.sys.Contents;
 import com.email.sys.loaders.ContentLoader;
-import javafx.scene.Node;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,5 +33,9 @@ public class ContentManager {
         if(Contents.getPrimaryContents().contains(content))
             contentTracker.forgetAll();
         contentTracker.remember(contentLoader.load(content, configuration));
+    }
+
+    public ContentArea getContentArea() {
+        return contentArea;
     }
 }

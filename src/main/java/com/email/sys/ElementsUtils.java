@@ -21,7 +21,7 @@ public class ElementsUtils {
     }
 
     public static void showCorrespondingLabel(Result<?> result, Label success, Label fail){
-        showCorrespondingLabel(result, success,fail, null);
+        showCorrespondingLabel(result, success, fail, null);
     }
 
     public static void showCorrespondingLabel(Result<?> result, Label success, Label fail, Resettable resettable){
@@ -36,6 +36,13 @@ public class ElementsUtils {
             if(resettable != null)
                 resettable.reset();
         }
+        // Trigger parent layout resize after showing/hiding labels
+        // Assuming success and fail are inside a parent layout (e.g., VBox, HBox)
+        if (success.getParent() != null) {
+            success.getParent().requestLayout();
+        }
+        if (fail.getParent() != null) {
+            fail.getParent().requestLayout();
+        }
     }
-
 }

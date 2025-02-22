@@ -2,29 +2,26 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<HBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="349.0"
-      prefWidth="447.0"
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      alignment="CENTER" prefHeight="349.0" prefWidth="447.0" spacing="20"
       xmlns="http://javafx.com/javafx/11.0.14-internal"
+      stylesheets="styles.css"
       fx:controller="com.email.sys.controllers.SignUpController">
-    <VBox alignment="CENTER" spacing="20" stylesheets="styles.css">
-        <VBox alignment="CENTER" spacing="20">
-            <Label styleClass="header-label" text="Sign Up"/>
-            <GridPane alignment="CENTER" hgap="10" vgap="10">
-                <Label styleClass="form-label" text="Email:" GridPane.rowIndex="1"/>
-                <TextField fx:id="emailField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label styleClass="header-label" text="Sign Up"/>
+    <GridPane alignment="CENTER" hgap="10" vgap="10">
+        <Label styleClass="form-label" text="Username:" GridPane.rowIndex="1"/>
+        <TextField fx:id="usernameField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-                <Label styleClass="form-label" text="Password:" GridPane.rowIndex="2"/>
-                <PasswordField fx:id="passwordField" styleClass="form-field" GridPane.columnIndex="1"
-                               GridPane.rowIndex="2"/>
+        <Label styleClass="form-label" text="Password:" GridPane.rowIndex="2"/>
+        <PasswordField fx:id="passwordField" styleClass="form-field" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                <Label styleClass="form-label" text="Confirm Password:" GridPane.rowIndex="3"/>
-                <PasswordField fx:id="confirmPasswordField" styleClass="form-field" GridPane.columnIndex="1"
-                               GridPane.rowIndex="3"/>
-            </GridPane>
-            <Label fx:id="errorLabel" managed="false" styleClass="error-message"/>
-            <Button fx:id="submitButton" styleClass="primary-button" text="Sign Up"/>
-            <Button fx:id="returnButton"
-                    styleClass="secondary-button" text="Return to Log In"/>
-        </VBox>
-    </VBox>
-</HBox>
+        <Label styleClass="form-label" text="Confirm Password:" GridPane.rowIndex="3"/>
+        <PasswordField fx:id="confirmPasswordField" styleClass="form-field" GridPane.columnIndex="1"
+                       GridPane.rowIndex="3"/>
+    </GridPane>
+    <Label fx:id="errorLabel" managed="false" styleClass="error-message"/>
+    <Label fx:id="successLabel" managed="false" styleClass="success-message"/>
+    <Button fx:id="submitButton" styleClass="primary-button" text="Sign Up"/>
+    <Button fx:id="returnButton" styleClass="secondary-button" text="Return to Log In"/>
+</VBox>

@@ -2,9 +2,7 @@ package com.email.sys.loaders;
 
 import com.email.sys.ContentArea;
 import com.email.sys.Contents;
-import com.email.sys.trackers.Tracker;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
