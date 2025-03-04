@@ -2,6 +2,7 @@ package com.email.sys.cell.factories;
 
 import com.email.sys.converters.ImageConverter;
 import com.email.sys.entities.Email;
+import com.email.sys.services.UserService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -21,6 +22,12 @@ import javafx.util.Callback;
 import java.time.LocalDateTime;
 
 public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Email>> {
+    private final UserService userService;
+
+    public EmailCellFactory(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     public ListCell<Email> call(ListView<Email> emailListView) {
         return new ListCell<>() {
@@ -79,7 +86,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 starLabel.setFont(Font.font(ARIAL, 16));
                 starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                 starLabel.setOnMouseClicked(evt -> {
-                    email.toggleStarred();
+                    userService.toggleEmailStar(email);
                     starLabel.setText(email.isStarred() ? "★" : "☆");
                     starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                 });

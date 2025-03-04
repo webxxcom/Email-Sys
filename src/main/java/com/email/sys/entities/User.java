@@ -1,6 +1,7 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
+import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

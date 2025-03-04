@@ -22,24 +22,20 @@ import java.util.ResourceBundle;
 public class SentController implements Initializable {
 
     private final SessionService sessionService;
-    private final MainPageController mainPageController;
-    UserService userService;
-    SpringFXMLLoader loader;
+    private final UserService userService;
 
     @FXML private TextField searchBar;
     @FXML private Button searchButton;
     @FXML private ListView<Email> sentEmails;
 
-    public SentController(SessionService sessionService, UserService userService, SpringFXMLLoader loader, MainPageController mainPageController) {
+    public SentController(SessionService sessionService, UserService userService) {
         this.sessionService = sessionService;
         this.userService = userService;
-        this.loader = loader;
-        this.mainPageController = mainPageController;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        sentEmails.setCellFactory(new EmailCellFactory());
+        sentEmails.setCellFactory(new EmailCellFactory(userService));
         sentEmails.setItems(FXCollections.observableArrayList(sessionService.getUser().getSentEmails()));
     }
 }

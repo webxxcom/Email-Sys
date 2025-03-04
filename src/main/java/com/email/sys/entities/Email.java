@@ -68,10 +68,6 @@ public class Email {
         return sendDate;
     }
 
-    public void setSendDate(LocalDateTime sendDate) {
-        this.sendDate = sendDate;
-    }
-
     public boolean isStarred() {
         return isStarred;
     }
@@ -82,10 +78,6 @@ public class Email {
 
     public User getReceiver() {
         return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
     }
 
     public void toggleStarred(){

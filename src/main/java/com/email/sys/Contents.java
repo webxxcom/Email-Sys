@@ -7,7 +7,8 @@ public enum Contents {
     SEND("/send"),
     SENT("/sent"),
     SETTINGS("/settings"),
-    EMAIL("/email");
+    EMAIL("/email"),
+    STARRED("/starred");
 
     final String path;
 

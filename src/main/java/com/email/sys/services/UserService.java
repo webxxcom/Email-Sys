@@ -6,16 +6,22 @@ import com.email.sys.entities.User;
 import jakarta.persistence.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.ref.Cleaner;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class UserService implements Cleaner.Cleanable {
 
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("emailSysUnit");
-    private final EntityManager em = emf.createEntityManager();
+    private final EntityManager em;
+
+    @Autowired
+    public UserService(EntityManager em) {
+        this.em = em;
+    }
 
     public Optional<User> getForEmail(String email) {
         TypedQuery<User> q = em.createQuery(
@@ -77,11 +83,6 @@ public class UserService implements Cleaner.Cleanable {
         }
         User receiver = optionalReceiver.get();
 
-        /* Can't send empty email */
-        if (emailText.isEmpty()) {
-            return Result.ofError("You can't send an email with empty body");
-        }
-
         /* Persist email */
         em.getTransaction().begin();
         Email email = em.merge(new Email(header, emailText, sender, receiver));
@@ -106,14 +107,29 @@ public class UserService implements Cleaner.Cleanable {
     @Override
     public void clean() {
         em.close();
-        emf.close();
     }
 
     public ObservableList<Email> getFilteredInbox(Long id, String filter) {
-        Query q = em.createQuery("select em from Email em where em.receiver.id=?1 and em.text like ?2");
+        TypedQuery<Email> q = em.createQuery(
+                "select em from Email em where em.receiver.id=?1 and em.text like ?2"
+                , Email.class
+        );
         q.setParameter(1, id);
         q.setParameter(2, "%" + filter + "%");
 
         return FXCollections.observableArrayList(q.getResultList());
+    }
+
+    public ObservableList<Email> getSpamEmails() {
+        //TODO implement spam emails
+        return null;
+    }
+
+    public ObservableList<Email> getStarredMessages() {
+        TypedQuery<Email> query =
+                em.createQuery("select em from Email em where em.isStarred = true",
+                        Email.class
+                );
+        return FXCollections.observableArrayList( query.getResultList());
     }
 }

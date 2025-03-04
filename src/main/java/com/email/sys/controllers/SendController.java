@@ -2,9 +2,9 @@ package com.email.sys.controllers;
 
 import com.email.sys.ElementsUtils;
 import com.email.sys.Result;
-import com.email.sys.entities.Email;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -21,14 +21,14 @@ import java.util.ResourceBundle;
 @Component
 @Scope("prototype")
 public class SendController implements Initializable, Resettable {
-    SessionService sessionService;
-    UserService userService;
+    private final SessionService sessionService;
+    private final UserService userService;
 
     @FXML private Label successLabel;
     @FXML private Label errorLabel;
-    @FXML private TextField recipientGmail;
-    @FXML private TextField headerField;
-    @FXML private TextArea emailText;
+    @FXML private TextField recipientEmailField;
+    @FXML private TextField emailHeaderField;
+    @FXML private TextArea emailTextArea;
     @FXML private Button sendButton;
 
     @Autowired
@@ -37,20 +37,30 @@ public class SendController implements Initializable, Resettable {
         this.userService = userService;
     }
 
-    public void sendEmail(){
-        Result<Email> res = userService.sendEmail(headerField.getText(), emailText.getText(), sessionService.getUser(), recipientGmail.getText());
+    public void sendEmail(ActionEvent actionEvent){
+        String recipientEmailText = recipientEmailField.getText();
+        String emailText = emailTextArea.getText();
+
+        Result<?> res;
+        if(recipientEmailText.isBlank()){
+            res = Result.ofError("Please fill the email field");
+        } else if(emailText.isBlank()){
+            res = Result.ofError("The empty letter cannot be sent");
+        } else {
+            res = userService.sendEmail(emailHeaderField.getText(), emailText, sessionService.getUser(), recipientEmailText);
+        }
         ElementsUtils.showCorrespondingLabel(res, successLabel, errorLabel, this);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        sendButton.setOnAction(evt -> sendEmail());
+        sendButton.setOnAction(this::sendEmail);
     }
 
     @Override
     public void reset() {
-        recipientGmail.setText("");
-        headerField.setText("");
-        emailText.setText("");
+        recipientEmailField.setText("");
+        emailHeaderField.setText("");
+        emailTextArea.setText("");
     }
 }

@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class EmailController implements DataInjectable<Email> {
     private final ContentManager contentManager;
-    Email email;
+
+    private Email email;
 
     @FXML Label emailSubject;
     @FXML Label emailSender;
