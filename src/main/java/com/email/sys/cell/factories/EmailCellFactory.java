@@ -2,6 +2,7 @@ package com.email.sys.cell.factories;
 
 import com.email.sys.converters.ImageConverter;
 import com.email.sys.entities.Email;
+import com.email.sys.services.EmailService;
 import com.email.sys.services.UserService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,15 +24,17 @@ import java.time.LocalDateTime;
 
 public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Email>> {
     private final UserService userService;
+    private final EmailService emailService;
 
-    public EmailCellFactory(UserService userService) {
+    public EmailCellFactory(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @Override
     public ListCell<Email> call(ListView<Email> emailListView) {
         return new ListCell<>() {
-            private static final String ARIAL = "Arial";
+            private static final java.lang.String ARIAL = "Arial";
             private static final int MAX_TEXT_LENGTH = 100;
 
             private Label getHeaderLabel(Email email) {
@@ -86,7 +89,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 starLabel.setFont(Font.font(ARIAL, 16));
                 starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                 starLabel.setOnMouseClicked(evt -> {
-                    userService.toggleEmailStar(email);
+                    emailService.toggleEmailStar(email);
                     starLabel.setText(email.isStarred() ? "★" : "☆");
                     starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                 });

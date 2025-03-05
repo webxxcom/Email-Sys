@@ -1,8 +1,8 @@
 package com.email.sys.controllers;
 
-import com.email.sys.loaders.SpringFXMLLoader;
 import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.entities.Email;
+import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
 import javafx.collections.FXCollections;
@@ -23,19 +23,21 @@ public class SentController implements Initializable {
 
     private final SessionService sessionService;
     private final UserService userService;
+    private final EmailService emailService;
 
     @FXML private TextField searchBar;
     @FXML private Button searchButton;
     @FXML private ListView<Email> sentEmails;
 
-    public SentController(SessionService sessionService, UserService userService) {
+    public SentController(SessionService sessionService, UserService userService, EmailService emailService) {
         this.sessionService = sessionService;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        sentEmails.setCellFactory(new EmailCellFactory(userService));
+        sentEmails.setCellFactory(new EmailCellFactory(userService, emailService));
         sentEmails.setItems(FXCollections.observableArrayList(sessionService.getUser().getSentEmails()));
     }
 }

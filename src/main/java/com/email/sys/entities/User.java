@@ -1,7 +1,8 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
-import javafx.collections.ObservableList;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,13 +13,13 @@ import java.util.Objects;
 @Entity
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private @Getter @Setter Long id;
 
     @Column(unique = true, nullable = false)
-    private String email;
+    private java.lang.String email;
 
     @Column(nullable = false)
-    private String password;
+    private java.lang.String password;
 
     @Column(nullable = false, updatable = false)
     LocalDate createdOn;
@@ -33,14 +34,14 @@ public class User {
     @OneToMany(mappedBy = "sender")
     private List<Email> sentEmails;
 
-    @OneToMany(mappedBy = "receiver")
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
     private List<Email> inboxEmails;
 
     public User(){
 
     }
 
-    public User(String email, String password) {
+    public User(java.lang.String email, java.lang.String password) {
         this.email = email;
         this.password = password;
     }
@@ -62,35 +63,19 @@ public class User {
 
     }
 
-    public void sendEmail(User to, Email email){
-        Objects.requireNonNull(email);
-        Objects.requireNonNull(to);
-
-        sentEmails.add(email);
-        to.inboxEmails.add(email);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
+    public java.lang.String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(java.lang.String email) {
         this.email = email;
     }
 
-    public String getPassword() {
+    public java.lang.String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(java.lang.String password) {
         this.password = password;
     }
 
@@ -144,7 +129,7 @@ public class User {
     }
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +

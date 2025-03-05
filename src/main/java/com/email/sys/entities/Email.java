@@ -11,10 +11,10 @@ public class Email {
     Long id;
 
     @Column(nullable = false)
-    String header;
+    java.lang.String header;
 
     @Column(nullable = false, updatable = false)
-    String text;
+    java.lang.String text;
 
     @Column(nullable = false)
     Boolean isStarred;
@@ -48,19 +48,19 @@ public class Email {
         this.isStarred = false;
     }
 
-    public String getText() {
+    public java.lang.String getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(java.lang.String text) {
         this.text = text;
     }
 
-    public String getHeader() {
+    public java.lang.String getHeader() {
         return header;
     }
 
-    public void setHeader(String header) {
+    public void setHeader(java.lang.String header) {
         this.header = header;
     }
 
@@ -85,7 +85,7 @@ public class Email {
     }
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "Email{" +
                 "id=" + id +
                 ", text='" + text + '\'' +

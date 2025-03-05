@@ -6,23 +6,15 @@ import com.email.sys.SceneManager;
 import com.email.sys.entities.User;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
-import com.sun.javafx.iio.common.ImageLoaderImpl;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
-import org.hibernate.engine.jdbc.internal.BinaryStreamImpl;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.stream.ImageInputStreamImpl;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -75,7 +67,7 @@ public class SettingsController implements Initializable {
         if(modifiedUser.equals(sessionService.getUser()))
             return;
 
-        Result<User> result = userService.saveSettings(modifiedUser);
+        Result<User> result = userService.save(modifiedUser);
         sessionService.setUser(result.getData());
         ElementsUtils.showLabel(savingResultLabel, result.getMessage());
     }

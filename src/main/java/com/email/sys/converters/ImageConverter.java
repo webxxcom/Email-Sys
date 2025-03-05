@@ -3,10 +3,9 @@ package com.email.sys.converters;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import org.junit.platform.commons.support.conversion.ConversionException;
+import org.hibernate.query.sqm.sql.ConversionException;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

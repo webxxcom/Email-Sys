@@ -2,6 +2,7 @@ package com.email.sys.controllers;
 
 import com.email.sys.ElementsUtils;
 import com.email.sys.Result;
+import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ import java.util.ResourceBundle;
 public class SendController implements Initializable, Resettable {
     private final SessionService sessionService;
     private final UserService userService;
+    private final EmailService emailService;
 
     @FXML private Label successLabel;
     @FXML private Label errorLabel;
@@ -32,9 +34,10 @@ public class SendController implements Initializable, Resettable {
     @FXML private Button sendButton;
 
     @Autowired
-    public SendController(SessionService sessionService, UserService userService) {
+    public SendController(SessionService sessionService, UserService userService, EmailService emailService) {
         this.sessionService = sessionService;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     public void sendEmail(ActionEvent actionEvent){
@@ -47,7 +50,7 @@ public class SendController implements Initializable, Resettable {
         } else if(emailText.isBlank()){
             res = Result.ofError("The empty letter cannot be sent");
         } else {
-            res = userService.sendEmail(emailHeaderField.getText(), emailText, sessionService.getUser(), recipientEmailText);
+            res = emailService.sendEmail(emailHeaderField.getText(), emailText, sessionService.getUser(), recipientEmailText);
         }
         ElementsUtils.showCorrespondingLabel(res, successLabel, errorLabel, this);
     }

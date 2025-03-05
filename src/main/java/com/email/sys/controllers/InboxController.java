@@ -3,7 +3,7 @@ package com.email.sys.controllers;
 import com.email.sys.Contents;
 import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.entities.Email;
-import com.email.sys.entities.User;
+import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
 import com.email.sys.trackers.ContentManager;
@@ -26,19 +26,21 @@ import java.util.ResourceBundle;
 @Scope("prototype")
 public class InboxController implements Initializable {
 
+    private final EmailService emailService;
+
     enum InboxFilters{
         ALL("All"),
         STARRED("Starred"),
         SPAM("Spam");
 
-        final String filterName;
+        final java.lang.String filterName;
 
-        InboxFilters(String filterName) {
+        InboxFilters(java.lang.String filterName) {
             this.filterName = filterName;
         }
 
         @Override
-        public String toString() {
+        public java.lang.String toString() {
             return filterName;
         }
     }
@@ -47,7 +49,7 @@ public class InboxController implements Initializable {
     private final UserService userService;
     private final SessionService sessionService;
 
-    String previousFilter;
+    java.lang.String previousFilter;
 
     @FXML ListView<Email> emails;
     @FXML TextField searchBar;
@@ -55,15 +57,16 @@ public class InboxController implements Initializable {
     @FXML ComboBox<InboxFilters> filterComboBox;
 
     @Autowired
-    public InboxController(UserService userService, SessionService sessionService, ContentManager contentManager) {
+    public InboxController(UserService userService, SessionService sessionService, ContentManager contentManager, EmailService emailService) {
         this.userService = userService;
         this.sessionService = sessionService;
         this.contentManager = contentManager;
+        this.emailService = emailService;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        emails.setCellFactory(new EmailCellFactory(userService));
+        emails.setCellFactory(new EmailCellFactory(userService, emailService));
 
         emails.setOnMouseClicked(this::openEmail);
         emails.setItems(FXCollections.observableArrayList(sessionService.getUser().getInboxEmails()));
@@ -75,8 +78,8 @@ public class InboxController implements Initializable {
     private void updateInboxCombo(Observable observable) {
         emails.setItems(switch (filterComboBox.getSelectionModel().getSelectedItem()) {
             case ALL -> FXCollections.observableArrayList(sessionService.getUser().getInboxEmails());
-            case SPAM -> userService.getSpamEmails();
-            case STARRED -> userService.getStarredMessages();
+            case SPAM -> emailService.getSpamEmailsForUser(sessionService.getUser());
+            case STARRED -> emailService.getStarredMessagesForUser(sessionService.getUser());
         });
     }
 
@@ -90,11 +93,11 @@ public class InboxController implements Initializable {
     }
 
     void filterInbox(ActionEvent actionEvent) {
-        String filter = searchBar.getText();
+        java.lang.String filter = searchBar.getText();
         if(Objects.equals(previousFilter, filter))
             return;
 
-        emails.setItems(userService.getFilteredInbox(sessionService.getUser().getId(), filter));
+        emails.setItems(emailService.getFilteredInboxForUser(sessionService.getUser(), filter));
         previousFilter = filter;
     }
 }

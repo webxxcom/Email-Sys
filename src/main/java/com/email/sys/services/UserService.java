@@ -1,135 +1,65 @@
 package com.email.sys.services;
 
+import com.email.sys.PasswordAuthenticator;
 import com.email.sys.Result;
-import com.email.sys.entities.Email;
 import com.email.sys.entities.User;
-import jakarta.persistence.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.email.sys.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.lang.ref.Cleaner;
-import java.util.List;
 import java.util.Optional;
 
-@Component
-public class UserService implements Cleaner.Cleanable {
+@Service
+public class UserService {
 
-    private final EntityManager em;
+    private final UserRepository userRepository;
+    private final PasswordAuthenticator passwordAuthenticator;
 
     @Autowired
-    public UserService(EntityManager em) {
-        this.em = em;
+    public UserService(UserRepository userRepository, PasswordAuthenticator passwordAuthenticator) {
+        this.userRepository = userRepository;
+        this.passwordAuthenticator = passwordAuthenticator;
     }
 
-    public Optional<User> getForEmail(String email) {
-        TypedQuery<User> q = em.createQuery(
-                "select u from User u where u.email = ?1", User.class
-        );
-        q.setParameter(1, email);
-        return Optional.ofNullable(q.getSingleResultOrNull());
+    public Optional<User> getForEmail(java.lang.String email) {
+        return userRepository.findByEmail(email);
     }
 
-    public Result<Email> toggleEmailStar(Email email) {
-        try {
-            em.getTransaction().begin();
-            email.toggleStarred();
-            em.getTransaction().commit();
-            return Result.ofSuccess(email);
-        } catch (Exception e) {
-            return Result.ofError("Error toggling email star");
-        }
-    }
-
+    @Transactional
     public Result<User> trySignUp(String email, String password) {
-        if (emailExists(email)) {
+        if (userRepository.userWithEmailExists(email)) {
             return Result.ofError("User with such an email already exists");
         }
 
-        em.getTransaction().begin();
-        User user = em.merge(new User(email, password));
-        em.getTransaction().commit();
-        return Result.ofSuccess(user, "The registration was successful");
-    }
-
-    private boolean emailExists(String email) {
-        Query query = em.createQuery("select 1 from User u where u.email = ?1");
-        query.setParameter(1, email);
-        return query.getSingleResultOrNull() != null;
+        return Result.ofSuccess(
+                userRepository.save(new User(email, password)),
+                "The registration was successful"
+        );
     }
 
     public Result<User> tryLogIn(String email, String password) {
-        TypedQuery<User> q = em.createQuery(
-                "select u from User u where email = :email", User.class
-        );
-        q.setParameter("email", email);
-
-        User user = q.getSingleResultOrNull();
-        if (user == null) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
             return Result.ofError("Such email does not exist");
         }
-        if (!user.getPassword().equals(password)) {
+
+        User user = optionalUser.get();
+        if (!passwordAuthenticator.authorize(password, user.getPassword())) {
             return Result.ofError("Password is incorrect");
         }
         return Result.ofSuccess(user);
     }
 
-    public Result<Email> sendEmail(String header, String emailText, User sender, String receiverEmail) {
-        /* User with such email must exist */
-        Optional<User> optionalReceiver = getForEmail(receiverEmail);
-        if (optionalReceiver.isEmpty()) {
-            return Result.ofError("User with such email does not exist");
-        }
-        User receiver = optionalReceiver.get();
-
-        /* Persist email */
-        em.getTransaction().begin();
-        Email email = em.merge(new Email(header, emailText, sender, receiver));
-        em.getTransaction().commit();
-
-        sender.sendEmail(receiver, email);
-        return Result.ofSuccess(email, "Message was successfully sent");
-    }
-
-    public Result<User> saveSettings(User user) {
+    public Result<User> save(User user) {
         try {
-            em.getTransaction().begin();
-            Result<User> res = Result.ofSuccess(em.merge(user), "Settings were successfully saved");
-            em.getTransaction().commit();
-
-            return res;
+            return Result.ofSuccess(
+                    userRepository.save(user),
+                    "Settings were successfully saved"
+            );
         } catch (Exception e) {
             return Result.ofError("Settings were not saved because of some error");
         }
-    }
-
-    @Override
-    public void clean() {
-        em.close();
-    }
-
-    public ObservableList<Email> getFilteredInbox(Long id, String filter) {
-        TypedQuery<Email> q = em.createQuery(
-                "select em from Email em where em.receiver.id=?1 and em.text like ?2"
-                , Email.class
-        );
-        q.setParameter(1, id);
-        q.setParameter(2, "%" + filter + "%");
-
-        return FXCollections.observableArrayList(q.getResultList());
-    }
-
-    public ObservableList<Email> getSpamEmails() {
-        //TODO implement spam emails
-        return null;
-    }
-
-    public ObservableList<Email> getStarredMessages() {
-        TypedQuery<Email> query =
-                em.createQuery("select em from Email em where em.isStarred = true",
-                        Email.class
-                );
-        return FXCollections.observableArrayList( query.getResultList());
     }
 }
