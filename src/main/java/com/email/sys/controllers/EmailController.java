@@ -1,8 +1,11 @@
 package com.email.sys.controllers;
 
+import com.email.sys.configurators.ConfigKey;
+import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
 import com.email.sys.trackers.ContentManager;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -11,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class EmailController implements DataInjectable<Email> {
+public class EmailController implements DataInjectable {
     private final ContentManager contentManager;
 
     private Email email;
@@ -28,8 +31,9 @@ public class EmailController implements DataInjectable<Email> {
     }
 
     @Override
-    public void inject(Email email) {
-        this.email = email;
+    public void inject(ConfigStorage config) {
+        this.email = config.getIfPresent(ConfigKey.EMAIL);
+        this.init();
     }
 
     @Override

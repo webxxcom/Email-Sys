@@ -25,7 +25,7 @@ public class ElementsUtils {
     }
 
     public static void showCorrespondingLabel(Result<?> result, Label success, Label fail, Resettable resettable){
-        String message = result.getMessage();
+        String message = result.message();
         if(result.hasError()){
             hideNode(success);
             showLabel(fail, message);

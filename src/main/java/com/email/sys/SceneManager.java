@@ -3,9 +3,12 @@ package com.email.sys;
 import com.email.sys.loaders.SpringSceneLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Getter @Setter
 @Component
 public class SceneManager {
     private final SpringSceneLoader springSceneLoader;
@@ -20,13 +23,5 @@ public class SceneManager {
         Scene scene = springSceneLoader.load(state);
         stage.setScene(scene);
         stage.centerOnScreen();
-    }
-
-    void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public Stage getStage() {
-        return stage;
     }
 }

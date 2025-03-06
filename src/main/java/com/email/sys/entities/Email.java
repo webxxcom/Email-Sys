@@ -1,35 +1,37 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Setter @Getter @NoArgsConstructor @EqualsAndHashCode
 @Entity
 public class Email {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
-    java.lang.String header;
+    private String header;
 
     @Column(nullable = false, updatable = false)
-    java.lang.String text;
+    private String text;
 
     @Column(nullable = false)
-    Boolean isStarred;
+    private @Getter @Setter Boolean isStarred;
 
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME(0)")
-    LocalDateTime sendDate;
+    private LocalDateTime sendDate;
 
     @ManyToOne(optional = false)
-    User sender;
+    private User sender;
 
     @ManyToOne(optional = false)
-    User receiver;
-
-    public Email() {
-    }
+    private User receiver;
 
     public Email(String text, User sender, User receiver) {
         this("", text, sender, receiver);
@@ -48,65 +50,17 @@ public class Email {
         this.isStarred = false;
     }
 
-    public java.lang.String getText() {
-        return text;
-    }
-
-    public void setText(java.lang.String text) {
-        this.text = text;
-    }
-
-    public java.lang.String getHeader() {
-        return header;
-    }
-
-    public void setHeader(java.lang.String header) {
-        this.header = header;
-    }
-
-    public LocalDateTime getSendDate() {
-        return sendDate;
-    }
-
-    public boolean isStarred() {
-        return isStarred;
-    }
-
-    public void setStarred(Boolean starred) {
-        isStarred = starred;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
     public void toggleStarred(){
-        setStarred(!isStarred);
+        setIsStarred(!isStarred);
     }
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return "Email{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Email email)) return false;
-        return Objects.equals(id, email.id) && Objects.equals(text, email.text) && Objects.equals(sender, email.sender) && Objects.equals(receiver, email.receiver);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, text, sender, receiver);
-    }
-
-    public User getSender() {
-        return sender;
     }
 }

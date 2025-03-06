@@ -68,8 +68,8 @@ public class SettingsController implements Initializable {
             return;
 
         Result<User> result = userService.save(modifiedUser);
-        sessionService.setUser(result.getData());
-        ElementsUtils.showLabel(savingResultLabel, result.getMessage());
+        sessionService.setUser(result.data());
+        ElementsUtils.showLabel(savingResultLabel, result.message());
     }
 
     private void chooseAvatar(Event evt) {

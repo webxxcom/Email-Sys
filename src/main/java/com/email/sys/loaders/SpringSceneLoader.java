@@ -3,6 +3,7 @@ package com.email.sys.loaders;
 import com.email.sys.Views;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class SpringSceneLoader implements Loader<Scene, Views> {
     }
 
     @Override
-    public Scene load(Views view) {
+    public Scene load(@NonNull Views view) {
         try {
             URL resource = SpringFXMLLoader.class.getResource(Objects.requireNonNull(view).getPath());
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(resource));

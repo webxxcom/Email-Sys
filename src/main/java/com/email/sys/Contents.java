@@ -1,7 +1,10 @@
 package com.email.sys;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public enum Contents {
     INBOX("/inbox"),
     SEND("/send"),
@@ -10,11 +13,7 @@ public enum Contents {
     EMAIL("/email"),
     STARRED("/starred");
 
-    final String path;
-
-    public String getPath() {
-        return path;
-    }
+    private final String path;
 
     /**
      * Primary contents are contents which should be the first in the content history in order not to

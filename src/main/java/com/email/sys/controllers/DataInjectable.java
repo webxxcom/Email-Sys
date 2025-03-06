@@ -1,6 +1,8 @@
 package com.email.sys.controllers;
 
-public interface DataInjectable<T> {
-    void inject(T data);
+import com.email.sys.configurators.ConfigStorage;
+
+public interface DataInjectable {
+    void inject(ConfigStorage data);
     void init();
 }

@@ -1,8 +1,7 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,38 +9,35 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@Setter @Getter @NoArgsConstructor
 @Entity
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Getter @Setter Long id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
-    private java.lang.String email;
+    private String email;
 
     @Column(nullable = false)
-    private java.lang.String password;
+    private String password;
 
     @Column(nullable = false, updatable = false)
-    LocalDate createdOn;
+    private LocalDate createdOn;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    UserSettings userSettings;
+    private UserSettings userSettings;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] avatar;
 
-    @OneToMany(mappedBy = "sender")
+    @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
     private List<Email> sentEmails;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
     private List<Email> inboxEmails;
 
-    public User(){
-
-    }
-
-    public User(java.lang.String email, java.lang.String password) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -61,54 +57,6 @@ public class User {
     private void beforePersisting() {
         this.createdOn = LocalDateTime.now().toLocalDate();
 
-    }
-
-    public java.lang.String getEmail() {
-        return email;
-    }
-
-    public void setEmail(java.lang.String email) {
-        this.email = email;
-    }
-
-    public java.lang.String getPassword() {
-        return password;
-    }
-
-    public void setPassword(java.lang.String password) {
-        this.password = password;
-    }
-
-    public List<Email> getSentEmails() {
-        return sentEmails;
-    }
-
-    public void setSentEmails(List<Email> sentEmails) {
-        this.sentEmails = sentEmails;
-    }
-
-    public List<Email> getInboxEmails() {
-        return inboxEmails;
-    }
-
-    public void setInboxEmails(List<Email> inboxEmails) {
-        this.inboxEmails = inboxEmails;
-    }
-
-    public byte[] getAvatarBytes() {
-        return avatar;
-    }
-
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
-
-    public UserSettings getUserSettings() {
-        return userSettings;
-    }
-
-    public void setUserSettings(UserSettings userSettings) {
-        this.userSettings = userSettings;
     }
 
     @Override

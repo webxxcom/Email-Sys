@@ -2,6 +2,8 @@ package com.email.sys.controllers;
 
 import com.email.sys.Contents;
 import com.email.sys.cell.factories.EmailCellFactory;
+import com.email.sys.configurators.ConfigKey;
+import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
 import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
@@ -14,11 +16,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -27,20 +31,21 @@ import java.util.ResourceBundle;
 public class InboxController implements Initializable {
 
     private final EmailService emailService;
+    private final ConfigStorage configStorage;
 
     enum InboxFilters{
         ALL("All"),
         STARRED("Starred"),
         SPAM("Spam");
 
-        final java.lang.String filterName;
+        final String filterName;
 
-        InboxFilters(java.lang.String filterName) {
+        InboxFilters(String filterName) {
             this.filterName = filterName;
         }
 
         @Override
-        public java.lang.String toString() {
+        public String toString() {
             return filterName;
         }
     }
@@ -49,7 +54,7 @@ public class InboxController implements Initializable {
     private final UserService userService;
     private final SessionService sessionService;
 
-    java.lang.String previousFilter;
+    String previousFilter;
 
     @FXML ListView<Email> emails;
     @FXML TextField searchBar;
@@ -57,11 +62,12 @@ public class InboxController implements Initializable {
     @FXML ComboBox<InboxFilters> filterComboBox;
 
     @Autowired
-    public InboxController(UserService userService, SessionService sessionService, ContentManager contentManager, EmailService emailService) {
+    public InboxController(UserService userService, SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage) {
         this.userService = userService;
         this.sessionService = sessionService;
         this.contentManager = contentManager;
         this.emailService = emailService;
+        this.configStorage = configStorage;
     }
 
     @Override
@@ -85,15 +91,17 @@ public class InboxController implements Initializable {
 
     private void openEmail(MouseEvent mouseEvent) {
         if(mouseEvent.getClickCount() == 2){
-            Email em = emails.getSelectionModel().getSelectedItem();
-            if(em != null) {
-                contentManager.proceedTo(Contents.EMAIL, em);
+            Email email = emails.getSelectionModel().getSelectedItem();
+            if(email != null) {
+                configStorage.add(ConfigKey.EMAIL, email);
+
+                contentManager.proceedTo(Contents.EMAIL, configStorage);
             }
         }
     }
 
     void filterInbox(ActionEvent actionEvent) {
-        java.lang.String filter = searchBar.getText();
+        String filter = searchBar.getText();
         if(Objects.equals(previousFilter, filter))
             return;
 

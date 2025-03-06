@@ -2,20 +2,17 @@ package com.email.sys;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+@Getter @Setter
 @Component
 public class ContentArea {
-    Pane contentPane;
+    private Pane contentPane;
 
-    public void setContentPane(Pane contentPane) {
-        this.contentPane = contentPane;
-    }
-
-    public void set(Node node){
-        if(contentPane == null)
-            throw new IllegalStateException("The content pane was not set during program execution");
-
+    public void set(@NonNull Node node){
         contentPane.getChildren().clear();
         contentPane.getChildren().add(node);
     }

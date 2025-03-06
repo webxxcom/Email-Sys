@@ -2,7 +2,10 @@ package com.email.sys.loaders;
 
 import com.email.sys.ContentArea;
 import com.email.sys.Contents;
+import com.email.sys.configurators.ConfigStorage;
+import jakarta.annotation.Nullable;
 import javafx.scene.Node;
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -18,9 +21,7 @@ public class ContentLoader implements ConfigurableLoader<Node, Contents> {
     }
 
     @Override
-    public <T> Node load(Contents content, T data){
-        Objects.requireNonNull(content);
-
+    public Node load(@NonNull Contents content, @Nullable ConfigStorage data){
         Node load = springFXMLLoader.load(content.getPath(), data);
         contentArea.set(load);
         return load;

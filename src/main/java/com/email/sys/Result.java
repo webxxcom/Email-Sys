@@ -1,23 +1,17 @@
 package com.email.sys;
 
-public class Result<T> {
-    private final String message;
-    private final T data;
+import lombok.NonNull;
 
-    private Result(String message, T data) {
-        this.message = message;
-        this.data = data;
-    }
-
-    public static <E> Result<E> ofError(String message){
+public record Result<T>(String message, T data) {
+    public static <E> Result<E> ofError(String message) {
         return new Result<>(message, null);
     }
 
-    public static <E> Result<E> ofSuccess(E data){
+    public static <E> Result<E> ofSuccess(@NonNull E data) {
         return new Result<>(null, data);
     }
 
-    public static <E> Result<E> ofSuccess(E data, String message){
+    public static <E> Result<E> ofSuccess(@NonNull E data, String message) {
         return new Result<>(message, data);
     }
 
@@ -25,15 +19,7 @@ public class Result<T> {
         return data == null;
     }
 
-    public boolean isSuccess(){
+    public boolean isSuccess() {
         return !hasError();
-    }
-
-    public String getMessage(){
-        return message;
-    }
-
-    public T getData(){
-        return data;
     }
 }

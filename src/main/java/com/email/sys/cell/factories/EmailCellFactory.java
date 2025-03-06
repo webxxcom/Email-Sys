@@ -77,7 +77,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 avatar.setStroke(Color.DARKBLUE);
                 avatar.setStrokeWidth(2);
 
-                byte[] avatarBytes = email.getSender().getAvatarBytes();
+                byte[] avatarBytes = email.getSender().getAvatar();
                 if (avatarBytes != null)
                     avatar.setFill(new ImagePattern(ImageConverter.fromBytesToImage(avatarBytes)));
 
@@ -85,13 +85,13 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
             }
 
             private Label getStarLabel(Email email) {
-                Label starLabel = new Label(email.isStarred() ? "★" : "☆");
+                Label starLabel = new Label(email.getIsStarred() ? "★" : "☆");
                 starLabel.setFont(Font.font(ARIAL, 16));
-                starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
+                starLabel.setTextFill(email.getIsStarred() ? Color.GOLD : Color.GRAY);
                 starLabel.setOnMouseClicked(evt -> {
                     emailService.toggleEmailStar(email);
-                    starLabel.setText(email.isStarred() ? "★" : "☆");
-                    starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
+                    starLabel.setText(email.getIsStarred() ? "★" : "☆");
+                    starLabel.setTextFill(email.getIsStarred() ? Color.GOLD : Color.GRAY);
                 });
                 return starLabel;
             }

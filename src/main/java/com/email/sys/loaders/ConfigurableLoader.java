@@ -1,5 +1,6 @@
 package com.email.sys.loaders;
 
+import com.email.sys.configurators.ConfigStorage;
 import jakarta.annotation.Nullable;
 
 public interface ConfigurableLoader<R, P> extends Loader<R, P>{
@@ -8,5 +9,5 @@ public interface ConfigurableLoader<R, P> extends Loader<R, P>{
         return load(param, null);
     }
 
-    <T> R load(P param, @Nullable T data);
+    R load(P param, @Nullable ConfigStorage data);
 }

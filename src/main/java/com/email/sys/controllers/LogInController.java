@@ -77,9 +77,9 @@ public class LogInController implements Initializable {
 
         Result<User> res = userService.tryLogIn(email, password);
         if(res.hasError()) {
-            ElementsUtils.showLabel(errorLabel, res.getMessage());
+            ElementsUtils.showLabel(errorLabel, res.message());
         }else{
-            sessionService.setUser(res.getData());
+            sessionService.setUser(res.data());
             sceneManager.switchScene(Views.MAIN_PAGE);
         }
     }
