@@ -6,7 +6,6 @@ import com.email.sys.entities.User;
 import com.email.sys.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -40,6 +39,12 @@ public class UserService {
     }
 
     public Result<User> tryLogIn(String email, String password) {
+        if(email.isBlank()){
+            return Result.ofError("Please fill the email");
+        }else if(password.isBlank()){
+            return Result.ofError("Please fill the password");
+        }
+
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) {
             return Result.ofError("Such email does not exist");

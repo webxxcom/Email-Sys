@@ -1,16 +1,17 @@
 package com.email.sys.repositories;
 
 import com.email.sys.entities.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository  {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    User save(User user);
-
+    @Query("select count(u) > 0 from User u where u.email = :email ")
     boolean userWithEmailExists(String email);
 }

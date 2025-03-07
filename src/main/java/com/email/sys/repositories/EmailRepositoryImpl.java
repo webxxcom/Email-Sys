@@ -19,14 +19,14 @@ public class EmailRepositoryImpl implements EmailRepository {
     }
 
     @Override
-    public Email getFilteredInbox(Long userId, java.lang.String filter) {
+    public List<Email> getFilteredInbox(Long userId, String filter) {
         TypedQuery<Email> q = entityManager.createQuery(
                 "select em from Email em where em.receiver.id=?1 and em.text like ?2",
                 Email.class
         );
         q.setParameter(1, userId);
         q.setParameter(2, "%" + filter + "%");
-        return q.getResultStream().findFirst().orElse(null);
+        return q.getResultList();
     }
 
     @Override

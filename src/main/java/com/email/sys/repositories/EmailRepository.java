@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface EmailRepository {
-    Email getFilteredInbox(Long userId, java.lang.String filter);
+    List<Email> getFilteredInbox(Long userId, String filter);
 
     List<Email> getStarredEmails(User user);
 

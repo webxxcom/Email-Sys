@@ -39,19 +39,6 @@ public class LogInController implements Initializable {
     @FXML private Button navigateToSignUpButton;
     @FXML private Label errorLabel;
 
-    private boolean validateCredentials(String email, String password){
-        if(email.isEmpty()){
-            ElementsUtils.showLabel(errorLabel, "Please fill the email");
-            return false;
-        }
-        if(password.isEmpty()){
-            ElementsUtils.showLabel(errorLabel, "Please fill the password");
-            return false;
-        }
-        ElementsUtils.hideNode(errorLabel);
-        return true;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginButton.setOnAction(evt -> login());
@@ -69,13 +56,8 @@ public class LogInController implements Initializable {
     }
 
     public void login(){
-        String email = emailField.getText();
-        String password = passwordField.getText();
-        if(!validateCredentials(email, password)){
-            return;
-        }
-
-        Result<User> res = userService.tryLogIn(email, password);
+        Result<User> res =
+                userService.tryLogIn(emailField.getText(), passwordField.getText());
         if(res.hasError()) {
             ElementsUtils.showLabel(errorLabel, res.message());
         }else{

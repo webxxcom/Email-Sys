@@ -5,7 +5,6 @@ import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
 import com.email.sys.trackers.ContentManager;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
