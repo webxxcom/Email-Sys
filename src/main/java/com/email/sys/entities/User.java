@@ -56,7 +56,6 @@ public class User {
     @PrePersist
     private void beforePersisting() {
         this.createdOn = LocalDateTime.now().toLocalDate();
-
     }
 
     @Override

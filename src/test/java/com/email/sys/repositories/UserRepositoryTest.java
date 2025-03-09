@@ -1,9 +1,7 @@
-package com.email.sys;
+package com.email.sys.repositories;
 
 import com.email.sys.entities.User;
-import com.email.sys.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

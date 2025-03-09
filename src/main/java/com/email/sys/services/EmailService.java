@@ -33,7 +33,7 @@ public class EmailService {
 
     public ObservableList<Email> getFilteredInboxForUser(User user, String filter) {
         return FXCollections.observableArrayList(
-                emailRepository.getFilteredInbox(user.getId(), filter)
+                emailRepository.getFilteredInbox(user, filter)
         );
     }
 

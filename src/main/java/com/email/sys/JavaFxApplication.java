@@ -8,8 +8,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class JavaFxApplication extends Application {
-    SceneManager sceneManager;
     ConfigurableApplicationContext springContext;
+    SceneManager sceneManager;
 
     @Override
     public void init() {

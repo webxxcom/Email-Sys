@@ -23,11 +23,9 @@ import javafx.util.Callback;
 import java.time.LocalDateTime;
 
 public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Email>> {
-    private final UserService userService;
     private final EmailService emailService;
 
-    public EmailCellFactory(UserService userService, EmailService emailService) {
-        this.userService = userService;
+    public EmailCellFactory(EmailService emailService) {
         this.emailService = emailService;
     }
 
@@ -85,13 +83,13 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
             }
 
             private Label getStarLabel(Email email) {
-                Label starLabel = new Label(email.getIsStarred() ? "★" : "☆");
+                Label starLabel = new Label(email.isStarred() ? "★" : "☆");
                 starLabel.setFont(Font.font(ARIAL, 16));
-                starLabel.setTextFill(email.getIsStarred() ? Color.GOLD : Color.GRAY);
+                starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                 starLabel.setOnMouseClicked(evt -> {
                     emailService.toggleEmailStar(email);
-                    starLabel.setText(email.getIsStarred() ? "★" : "☆");
-                    starLabel.setTextFill(email.getIsStarred() ? Color.GOLD : Color.GRAY);
+                    starLabel.setText(email.isStarred() ? "★" : "☆");
+                    starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                 });
                 return starLabel;
             }

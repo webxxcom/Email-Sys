@@ -36,7 +36,7 @@ class EmailServiceTest {
 
         List<Email> emails = List.of(email1, email2);
 
-        when(emailRepository.getFilteredInbox(anyLong(), anyString())).thenReturn(emails);
+        when(emailRepository.getFilteredInbox(any(), anyString())).thenReturn(emails);
 
         User user = new User();
         user.setId(1L);
@@ -51,14 +51,14 @@ class EmailServiceTest {
     }
 
     @Test
-    void testGetStarredEmails(){
+    void testIsStarredEmails(){
         Email e1 = new Email();
         e1.setId(1L);
-        e1.setIsStarred(false);
+        e1.setStarred(false);
 
         Email e2 = new Email();
         e2.setId(2L);
-        e2.setIsStarred(true);
+        e2.setStarred(true);
 
         List<Email> emails = List.of(e1, e2);
         User u = new User();

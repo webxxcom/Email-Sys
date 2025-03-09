@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Setter @Getter @NoArgsConstructor @EqualsAndHashCode
 @Entity
@@ -22,7 +21,7 @@ public class Email {
     private String text;
 
     @Column(nullable = false)
-    private @Getter @Setter Boolean isStarred;
+    private boolean isStarred;
 
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME(0)")
     private LocalDateTime sendDate;
@@ -46,12 +45,11 @@ public class Email {
 
     @PrePersist
     private void beforePersisting(){
-        this.sendDate = LocalDateTime.now();
-        this.isStarred = false;
+        if (sendDate == null) sendDate = LocalDateTime.now();
     }
 
     public void toggleStarred(){
-        setIsStarred(!isStarred);
+        setStarred(!isStarred);
     }
 
     @Override
