@@ -11,6 +11,10 @@ public class JavaFxApplication extends Application {
     ConfigurableApplicationContext springContext;
     SceneManager sceneManager;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void init() {
         springContext = SpringApplication.run(JavaFxApplication.class);
@@ -29,10 +33,6 @@ public class JavaFxApplication extends Application {
     @Override
     public void stop() {
         springContext.stop();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
 

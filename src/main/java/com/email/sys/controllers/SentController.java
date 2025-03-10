@@ -23,9 +23,12 @@ public class SentController implements Initializable {
     private final SessionService sessionService;
     private final EmailService emailService;
 
-    @FXML private TextField searchBar;
-    @FXML private Button searchButton;
-    @FXML private ListView<Email> sentEmails;
+    @FXML
+    private TextField searchBar;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private ListView<Email> sentEmails;
 
     public SentController(SessionService sessionService, EmailService emailService) {
         this.sessionService = sessionService;

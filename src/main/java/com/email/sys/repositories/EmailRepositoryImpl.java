@@ -38,9 +38,9 @@ public class EmailRepositoryImpl implements EmailRepository {
     @Override
     public List<Email> getStarredEmails(User user) {
         TypedQuery<Email> query = entityManager.createQuery(
-                        "select em from Email em where em.isStarred = true and em.receiver = :user",
-                        Email.class
-                );
+                "select em from Email em where em.isStarred = true and em.receiver = :user",
+                Email.class
+        );
         query.setParameter("user", user);
         return query.getResultList();
     }
@@ -57,7 +57,7 @@ public class EmailRepositoryImpl implements EmailRepository {
     @Override
     @Transactional
     public Email save(@NonNull Email email) {
-        if(email.getId() == null) {
+        if (email.getId() == null) {
             entityManager.persist(email);
             return email;
         }

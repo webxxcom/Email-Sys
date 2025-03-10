@@ -2,7 +2,6 @@ package com.email.sys.trackers;
 
 import com.email.sys.ContentArea;
 import com.email.sys.Contents;
-import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.loaders.ContentLoader;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,18 +20,18 @@ public class ContentManager {
         this.contentArea = contentArea;
     }
 
-    public void goBack(){
+    public void goBack() {
         contentArea.set(contentTracker.back());
     }
 
-    public void goForth(){
+    public void goForth() {
         contentArea.set(contentTracker.forth());
     }
 
-    public void proceedTo(@NonNull Contents content){
-        if(content.equals(currentContent)) {
+    public void proceedTo(@NonNull Contents content) {
+        if (content.equals(currentContent)) {
             return;
-        }else if(Contents.getPrimaryContents().contains(content)) {
+        } else if (Contents.getPrimaryContents().contains(content)) {
             contentTracker.forgetAll();
         }
         contentTracker.remember(contentLoader.load(content));

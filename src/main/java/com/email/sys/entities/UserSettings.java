@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor
+@Data
+@NoArgsConstructor
 @Entity
 public class UserSettings {
     @Id
@@ -24,7 +25,7 @@ public class UserSettings {
     }
 
     @PrePersist
-    void initialize(){
+    void initialize() {
         sendNotifications = true;
     }
 }

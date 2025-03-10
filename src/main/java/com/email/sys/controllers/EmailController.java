@@ -1,7 +1,6 @@
 package com.email.sys.controllers;
 
 import com.email.sys.Contents;
-import com.email.sys.SceneManager;
 import com.email.sys.configurators.ConfigKey;
 import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
@@ -18,15 +17,19 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class EmailController implements DataInjectable {
     private final ContentManager contentManager;
-
+    @FXML
+    Label emailSubject;
+    @FXML
+    Label emailSender;
+    @FXML
+    TextArea emailBody;
+    @FXML
+    Button backButton;
+    @FXML
+    Button replyButton;
+    @FXML
+    Button forwardButton;
     private Email email;
-
-    @FXML Label emailSubject;
-    @FXML Label emailSender;
-    @FXML TextArea emailBody;
-    @FXML Button backButton;
-    @FXML Button replyButton;
-    @FXML Button forwardButton;
 
     public EmailController(ContentManager contentManager) {
         this.contentManager = contentManager;

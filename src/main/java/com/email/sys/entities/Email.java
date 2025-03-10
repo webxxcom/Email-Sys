@@ -1,7 +1,6 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
-import javafx.beans.property.SimpleBooleanProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +8,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Setter @Getter @NoArgsConstructor @EqualsAndHashCode
+@Setter
+@Getter
+@NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 public class Email {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -37,7 +40,7 @@ public class Email {
         this("", text, sender, receiver);
     }
 
-    public Email(String header, String text, User sender, User receiver){
+    public Email(String header, String text, User sender, User receiver) {
         this.text = text;
         this.header = header;
         this.sender = sender;
@@ -45,11 +48,11 @@ public class Email {
     }
 
     @PrePersist
-    private void beforePersisting(){
+    private void beforePersisting() {
         if (sendDate == null) sendDate = LocalDateTime.now();
     }
 
-    public void toggleStarred(){
+    public void toggleStarred() {
         setStarred(!isStarred);
     }
 
@@ -61,9 +64,5 @@ public class Email {
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 '}';
-    }
-
-    public Object starredProperty() {
-        return null;
     }
 }

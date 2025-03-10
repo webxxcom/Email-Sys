@@ -1,6 +1,9 @@
 package com.email.sys.controllers;
 
-import com.email.sys.*;
+import com.email.sys.ElementsUtils;
+import com.email.sys.Result;
+import com.email.sys.SceneManager;
+import com.email.sys.Views;
 import com.email.sys.entities.User;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
@@ -25,7 +28,16 @@ public class LogInController implements Initializable {
     private final UserService userService;
     private final SceneManager sceneManager;
     private final SessionService sessionService;
-
+    @FXML
+    private TextField emailField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button navigateToSignUpButton;
+    @FXML
+    private Label errorLabel;
     @Autowired
     public LogInController(UserService userService, SceneManager sceneManager, SessionService sessionService) {
         this.userService = userService;
@@ -33,40 +45,34 @@ public class LogInController implements Initializable {
         this.sessionService = sessionService;
     }
 
-    @FXML private TextField emailField;
-    @FXML private PasswordField passwordField;
-    @FXML private Button loginButton;
-    @FXML private Button navigateToSignUpButton;
-    @FXML private Label errorLabel;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginButton.setOnAction(evt -> login());
         navigateToSignUpButton.setOnAction(evt -> navigateToSignUp());
         passwordField.setOnKeyPressed(evt -> {
-            if(evt.getCode().equals(KeyCode.ENTER)){
+            if (evt.getCode().equals(KeyCode.ENTER)) {
                 login();
             }
         });
-        emailField.setOnKeyPressed(evt->{
-            if(evt.getCode().equals(KeyCode.ENTER)){
+        emailField.setOnKeyPressed(evt -> {
+            if (evt.getCode().equals(KeyCode.ENTER)) {
                 passwordField.requestFocus();
             }
         });
     }
 
-    public void login(){
+    public void login() {
         Result<User> res =
                 userService.tryLogIn(emailField.getText(), passwordField.getText());
-        if(res.hasError()) {
+        if (res.hasError()) {
             ElementsUtils.showLabel(errorLabel, res.message());
-        }else{
+        } else {
             sessionService.setUser(res.data());
             sceneManager.switchScene(Views.MAIN_PAGE);
         }
     }
 
-    public void navigateToSignUp(){
+    public void navigateToSignUp() {
         sceneManager.switchScene(Views.SIGN_UP);
     }
 }

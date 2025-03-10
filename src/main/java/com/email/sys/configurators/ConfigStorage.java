@@ -12,16 +12,16 @@ public class ConfigStorage {
 
     private final Map<ConfigKey, Object> config = new HashMap<>();
 
-    public void add(ConfigKey name, Object object){
+    public void add(ConfigKey name, Object object) {
         config.put(name, object);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getIfPresent(ConfigKey name){
+    public <T> T getIfPresent(ConfigKey name) {
         return ((T) config.getOrDefault(name, null));
     }
 
-    public void remove(ConfigKey key){
+    public void remove(ConfigKey key) {
         config.remove(key);
     }
 }

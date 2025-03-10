@@ -10,17 +10,19 @@ import com.email.sys.services.SessionService;
 import com.email.sys.trackers.ContentManager;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Component
@@ -29,8 +31,66 @@ public class InboxController implements Initializable {
 
     private final EmailService emailService;
     private final ConfigStorage configStorage;
+    private final ContentManager contentManager;
+    private final SessionService sessionService;
 
-    enum InboxFilters{
+    @FXML
+    ListView<Email> emails;
+    @FXML
+    TextField searchBar;
+    @FXML
+    Button searchButton;
+    @FXML
+    ComboBox<InboxFilters> filterComboBox;
+
+    private FilteredList<Email> filteredEmails;
+    @Autowired
+    public InboxController(SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage) {
+        this.sessionService = sessionService;
+        this.contentManager = contentManager;
+        this.emailService = emailService;
+        this.configStorage = configStorage;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        emails.setCellFactory(new EmailCellFactory(emailService));
+
+        emails.setOnMouseClicked(this::openEmail);
+        filteredEmails = new FilteredList<>(FXCollections.observableArrayList(sessionService.getUser().getInboxEmails()));
+        emails.setItems(filteredEmails);
+        searchBar.textProperty().addListener(this::filterInbox);
+        filterComboBox.setItems(FXCollections.observableArrayList(InboxFilters.values()));
+        filterComboBox.valueProperty().addListener(this::updateInboxCombo);
+    }
+
+    private void filterInbox(Observable observable) {
+        filteredEmails.setPredicate(em -> em
+                .getText()
+                .toLowerCase()
+                .contains(searchBar.getText().toLowerCase())
+        );
+    }
+
+    private void updateInboxCombo(Observable observable) {
+        switch (filterComboBox.getSelectionModel().getSelectedItem()) {
+            case ALL -> filteredEmails.setPredicate(em -> true);
+            case SPAM -> filteredEmails.setPredicate(em -> false);
+            case STARRED -> filteredEmails.setPredicate(Email::isStarred);
+        }
+    }
+
+    private void openEmail(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+            Email email = emails.getSelectionModel().getSelectedItem();
+            if (email != null) {
+                configStorage.add(ConfigKey.EMAIL, email);
+                contentManager.proceedTo(Contents.EMAIL);
+            }
+        }
+    }
+
+    enum InboxFilters {
         ALL("All"),
         STARRED("Starred"),
         SPAM("Spam");
@@ -45,61 +105,5 @@ public class InboxController implements Initializable {
         public String toString() {
             return filterName;
         }
-    }
-
-    private final ContentManager contentManager;
-    private final SessionService sessionService;
-
-    String previousFilter;
-
-    @FXML ListView<Email> emails;
-    @FXML TextField searchBar;
-    @FXML Button searchButton;
-    @FXML ComboBox<InboxFilters> filterComboBox;
-
-    @Autowired
-    public InboxController(SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage) {
-        this.sessionService = sessionService;
-        this.contentManager = contentManager;
-        this.emailService = emailService;
-        this.configStorage = configStorage;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        emails.setCellFactory(new EmailCellFactory(emailService));
-
-        emails.setOnMouseClicked(this::openEmail);
-        emails.setItems(emailService.getInboxForUser(sessionService.getUser()));
-        searchButton.setOnAction(this::filterInbox);
-        filterComboBox.setItems(FXCollections.observableArrayList(InboxFilters.values()));
-        filterComboBox.valueProperty().addListener(this::updateInboxCombo);
-    }
-
-    private void updateInboxCombo(Observable observable) {
-        emails.setItems(switch (filterComboBox.getSelectionModel().getSelectedItem()) {
-            case ALL -> emailService.getInboxForUser(sessionService.getUser());
-            case SPAM -> emailService.getSpamEmailsForUser(sessionService.getUser());
-            case STARRED -> emailService.getStarredMessagesForUser(sessionService.getUser());
-        });
-    }
-
-    private void openEmail(MouseEvent mouseEvent) {
-        if(mouseEvent.getClickCount() == 2){
-            Email email = emails.getSelectionModel().getSelectedItem();
-            if(email != null) {
-                configStorage.add(ConfigKey.EMAIL, email);
-                contentManager.proceedTo(Contents.EMAIL);
-            }
-        }
-    }
-
-    void filterInbox(ActionEvent actionEvent) {
-        String filter = searchBar.getText();
-        if(Objects.equals(previousFilter, filter))
-            return;
-
-        emails.setItems(emailService.getFilteredInboxForUser(sessionService.getUser(), filter));
-        previousFilter = filter;
     }
 }

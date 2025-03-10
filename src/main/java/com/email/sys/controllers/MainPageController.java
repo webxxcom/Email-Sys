@@ -24,13 +24,20 @@ public class MainPageController implements Initializable {
     private final SceneManager sceneManager;
     private final ContentManager contentManager;
 
-    @FXML Pane contentPane;
-    @FXML VBox navigationPanel;
-    @FXML Button inboxButton;
-    @FXML Button sendButton;
-    @FXML Button sentButton;
-    @FXML Button settingsButton;
-    @FXML Button logOutButton;
+    @FXML
+    Pane contentPane;
+    @FXML
+    VBox navigationPanel;
+    @FXML
+    Button inboxButton;
+    @FXML
+    Button sendButton;
+    @FXML
+    Button sentButton;
+    @FXML
+    Button settingsButton;
+    @FXML
+    Button logOutButton;
 
     @Autowired
     public MainPageController(SessionService sessionService, SceneManager sceneManager, ContentManager contentManager) {
@@ -50,7 +57,7 @@ public class MainPageController implements Initializable {
         logOutButton.setOnAction(this::logOut);
     }
 
-    public void logOut(ActionEvent actionEvent){
+    public void logOut(ActionEvent actionEvent) {
         sessionService.clean();
         sceneManager.switchScene(Views.LOG_IN);
     }

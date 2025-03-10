@@ -26,12 +26,18 @@ public class SendController implements Initializable, Resettable {
     private final UserService userService;
     private final EmailService emailService;
 
-    @FXML private Label successLabel;
-    @FXML private Label errorLabel;
-    @FXML private TextField recipientEmailField;
-    @FXML private TextField emailHeaderField;
-    @FXML private TextArea emailTextArea;
-    @FXML private Button sendButton;
+    @FXML
+    private Label successLabel;
+    @FXML
+    private Label errorLabel;
+    @FXML
+    private TextField recipientEmailField;
+    @FXML
+    private TextField emailHeaderField;
+    @FXML
+    private TextArea emailTextArea;
+    @FXML
+    private Button sendButton;
 
     @Autowired
     public SendController(SessionService sessionService, UserService userService, EmailService emailService) {
@@ -40,14 +46,14 @@ public class SendController implements Initializable, Resettable {
         this.emailService = emailService;
     }
 
-    public void sendEmail(ActionEvent actionEvent){
+    public void sendEmail(ActionEvent actionEvent) {
         String recipientEmailText = recipientEmailField.getText();
         String emailText = emailTextArea.getText();
 
         Result<?> res;
-        if(recipientEmailText.isBlank()){
+        if (recipientEmailText.isBlank()) {
             res = Result.ofError("Please fill the email field");
-        } else if(emailText.isBlank()){
+        } else if (emailText.isBlank()) {
             res = Result.ofError("The empty letter cannot be sent");
         } else {
             res = emailService.sendEmail(emailHeaderField.getText(), emailText, sessionService.getUser(), recipientEmailText);

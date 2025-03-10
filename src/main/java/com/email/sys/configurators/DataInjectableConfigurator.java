@@ -13,7 +13,7 @@ public class DataInjectableConfigurator implements Configurator {
 
     @Override
     public void configure(Object object) {
-        if(object instanceof DataInjectable dataInjectable)
+        if (object instanceof DataInjectable dataInjectable)
             dataInjectable.inject(configStorage);
     }
 }

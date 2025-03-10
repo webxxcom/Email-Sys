@@ -3,7 +3,6 @@ package com.email.sys.cell.factories;
 import com.email.sys.converters.ImageConverter;
 import com.email.sys.entities.Email;
 import com.email.sys.services.EmailService;
-import com.email.sys.services.UserService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

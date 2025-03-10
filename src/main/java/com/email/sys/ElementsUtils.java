@@ -9,31 +9,31 @@ public class ElementsUtils {
     private ElementsUtils() {
     }
 
-    public static void showLabel(Label label, String message){
+    public static void showLabel(Label label, String message) {
         label.setVisible(true);
         label.setManaged(true);
         label.setText(message);
     }
 
-    public static void hideNode(Node node){
+    public static void hideNode(Node node) {
         node.setVisible(false);
         node.setManaged(false);
     }
 
-    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail){
+    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail) {
         showCorrespondingLabel(result, success, fail, null);
     }
 
-    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail, Resettable resettable){
+    public static void showCorrespondingLabel(Result<?> result, Label success, Label fail, Resettable resettable) {
         String message = result.message();
-        if(result.hasError()){
+        if (result.hasError()) {
             hideNode(success);
             showLabel(fail, message);
-        }else{
+        } else {
             hideNode(fail);
             showLabel(success, message);
 
-            if(resettable != null)
+            if (resettable != null)
                 resettable.reset();
         }
         // Trigger parent layout resize after showing/hiding labels

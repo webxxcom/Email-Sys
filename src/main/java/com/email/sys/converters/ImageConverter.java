@@ -15,7 +15,7 @@ public class ImageConverter {
     private ImageConverter() {
     }
 
-    public static byte[] fromImageToBytes(Image image){
+    public static byte[] fromImageToBytes(Image image) {
         int width = (int) image.getWidth();
         int height = (int) image.getHeight();
         WritableImage writableImage = new WritableImage(width, height);
@@ -30,7 +30,7 @@ public class ImageConverter {
         }
     }
 
-    public static Image fromBytesToImage(byte[] bytes){
+    public static Image fromBytesToImage(byte[] bytes) {
         return new Image(new ByteArrayInputStream(bytes));
     }
 }

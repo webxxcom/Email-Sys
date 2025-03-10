@@ -17,7 +17,7 @@ public class ContentLoader implements Loader<Node, Contents> {
     }
 
     @Override
-    public Node load(@NonNull Contents content){
+    public Node load(@NonNull Contents content) {
         Node load = springFXMLLoader.load(content.getPath());
         contentArea.set(load);
         return load;

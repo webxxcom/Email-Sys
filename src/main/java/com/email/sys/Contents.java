@@ -16,16 +16,17 @@ public enum Contents {
 
     private final String path;
 
+    Contents(String path) {
+        this.path = "/mainPageContent" + path + ".fxml";
+    }
+
     /**
      * Primary contents are contents which should be the first in the content history in order not to
      * record them in the history
+     *
      * @return list of all primary contents
      */
-    public static List<Contents> getPrimaryContents(){
+    public static List<Contents> getPrimaryContents() {
         return List.of(INBOX, SEND, SEND, SETTINGS);
-    }
-
-    Contents(String path) {
-        this.path = "/mainPageContent" + path + ".fxml";
     }
 }

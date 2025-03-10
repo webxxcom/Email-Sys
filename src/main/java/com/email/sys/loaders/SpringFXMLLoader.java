@@ -22,14 +22,14 @@ public class SpringFXMLLoader implements Loader<Node, String> {
     }
 
     @Override
-    public Node load(String fileName){
+    public Node load(String fileName) {
         try {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(SpringFXMLLoader.class.getResource(fileName)));
             loader.setControllerFactory(springContext::getBean);
 
             Node load = loader.load();
             configurators.forEach(el ->
-                        el.configure(loader.getController()));
+                    el.configure(loader.getController()));
             return load;
         } catch (Exception ex) {
             throw new LoadingException("Error loading FXML file: " + fileName, ex);

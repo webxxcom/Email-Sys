@@ -5,7 +5,8 @@ import com.email.sys.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter @AllArgsConstructor
+@Getter
+@AllArgsConstructor
 public enum ConfigKey {
     EMAIL(Email.class),
     USER(User.class);

@@ -1,6 +1,6 @@
 package com.email.sys.loaders;
 
-public class LoadingException extends RuntimeException{
+public class LoadingException extends RuntimeException {
     public LoadingException() {
     }
 

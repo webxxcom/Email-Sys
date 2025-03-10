@@ -30,16 +30,26 @@ public class SettingsController implements Initializable {
     private final UserService userService;
     private final User modifiedUser;
 
-    @FXML TextField usernameField;
-    @FXML TextField emailField;
-    @FXML CheckBox notificationsCheckBox;
-    @FXML ComboBox<String> themeComboBox;
-    @FXML TextArea signatureTextArea;
-    @FXML Label avatarLabel;
-    @FXML Button uploadAvatarButton;
-    @FXML Label savingResultLabel;
-    @FXML Button saveButton;
-    @FXML Button cancelButton;
+    @FXML
+    TextField usernameField;
+    @FXML
+    TextField emailField;
+    @FXML
+    CheckBox notificationsCheckBox;
+    @FXML
+    ComboBox<String> themeComboBox;
+    @FXML
+    TextArea signatureTextArea;
+    @FXML
+    Label avatarLabel;
+    @FXML
+    Button uploadAvatarButton;
+    @FXML
+    Label savingResultLabel;
+    @FXML
+    Button saveButton;
+    @FXML
+    Button cancelButton;
 
     public SettingsController(SessionService sessionService, SceneManager sceneManager, UserService userService) {
         this.sessionService = sessionService;
@@ -64,7 +74,7 @@ public class SettingsController implements Initializable {
 
     private void save(ActionEvent actionEvent) {
         /* Do not execute db query if nothing was modified */
-        if(modifiedUser.equals(sessionService.getUser()))
+        if (modifiedUser.equals(sessionService.getUser()))
             return;
 
         Result<User> result = userService.save(modifiedUser);
@@ -79,7 +89,7 @@ public class SettingsController implements Initializable {
         File f = fc.showOpenDialog(sceneManager.getStage());
         if (f != null) {
             avatarLabel.setText(f.getName());
-            try (var fis = new FileInputStream(f)){
+            try (var fis = new FileInputStream(f)) {
                 modifiedUser.setAvatar(fis.readAllBytes());
             } catch (IOException e) {
                 throw new RuntimeException("There was an error in reading the selected file: " + f.getPath());

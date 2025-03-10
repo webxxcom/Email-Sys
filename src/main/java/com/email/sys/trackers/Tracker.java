@@ -7,23 +7,23 @@ public abstract class Tracker<T> {
     protected Deque<T> back = new ArrayDeque<>();
     protected Deque<T> front = new ArrayDeque<>();
 
-    public T back(){
-        if(back.size() > 1) {
+    public T back() {
+        if (back.size() > 1) {
             front.push(back.pop());
             return back.peek();
         }
         return null;
     }
 
-    public T forth(){
-        if(!front.isEmpty()) {
+    public T forth() {
+        if (!front.isEmpty()) {
             back.push(front.pop());
             return front.peek();
         }
         return null;
     }
 
-    public void remember(T what){
+    public void remember(T what) {
         back.push(what);
         front.clear();
     }

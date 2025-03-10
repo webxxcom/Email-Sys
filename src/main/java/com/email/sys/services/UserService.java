@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.NonNull;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +43,9 @@ public class UserService {
 
     @Transactional
     public Result<User> tryLogIn(@NonNull String email, @NonNull String password) {
-        if(email.isBlank()){
+        if (email.isBlank()) {
             return Result.ofError("Please fill the email");
-        }else if(password.isBlank()){
+        } else if (password.isBlank()) {
             return Result.ofError("Please fill the password");
         }
 
@@ -71,5 +70,9 @@ public class UserService {
         } catch (Exception e) {
             return Result.ofError("Settings were not saved because of some error");
         }
+    }
+
+    public ObservableList<String> searchForEmail(@NonNull String emLike) {
+        return FXCollections.observableArrayList(userRepository.getEmailsLike(emLike));
     }
 }

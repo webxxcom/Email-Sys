@@ -2,9 +2,6 @@ package com.email.sys.repositories;
 
 import com.email.sys.entities.Email;
 import com.email.sys.entities.User;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
-import javafx.util.Callback;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -20,6 +17,7 @@ public interface EmailRepository {
     Email toggleEmailStar(Email email);
 
     Email save(Email email);
+
     List<Email> saveAll(List<Email> email);
 
     Optional<Email> find(Email mockEmail1);

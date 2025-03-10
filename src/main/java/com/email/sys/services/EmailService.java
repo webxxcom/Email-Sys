@@ -48,7 +48,7 @@ public class EmailService {
         );
     }
 
-    public Email createEmail(String header, String text, User sender, User receiver){
+    public Email createEmail(String header, String text, User sender, User receiver) {
         return new Email(header, text, sender, receiver);
     }
 

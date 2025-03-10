@@ -7,12 +7,13 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-@Getter @Setter
+@Getter
+@Setter
 @Component
 public class ContentArea {
     private Pane contentPane;
 
-    public void set(@NonNull Node node){
+    public void set(@NonNull Node node) {
         contentPane.getChildren().clear();
         contentPane.getChildren().add(node);
     }
