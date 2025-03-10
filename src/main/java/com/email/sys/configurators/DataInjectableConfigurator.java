@@ -5,12 +5,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DataInjectableConfigurator implements Configurator {
-    @Override
-    public void configure(Object object, ConfigStorage config) {
-        if(!(object instanceof DataInjectable dataInjectable))
-            throw new RuntimeException();
+    private final ConfigStorage configStorage;
 
-        dataInjectable.inject(config);
+    public DataInjectableConfigurator(ConfigStorage configStorage) {
+        this.configStorage = configStorage;
     }
 
+    @Override
+    public void configure(Object object) {
+        if(object instanceof DataInjectable dataInjectable)
+            dataInjectable.inject(configStorage);
+    }
 }

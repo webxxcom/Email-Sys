@@ -5,6 +5,8 @@ import com.email.sys.Result;
 import com.email.sys.entities.User;
 import com.email.sys.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.NonNull;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;

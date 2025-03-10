@@ -4,7 +4,6 @@ import com.email.sys.ContentArea;
 import com.email.sys.Contents;
 import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.loaders.ContentLoader;
-import javafx.event.ActionEvent;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
@@ -14,6 +13,7 @@ public class ContentManager {
     private final ContentLoader contentLoader;
     private final ContentTracker contentTracker;
     private final @Getter ContentArea contentArea;
+    private @Getter Contents currentContent;
 
     public ContentManager(ContentLoader contentLoader, ContentTracker contentTracker, ContentArea contentArea) {
         this.contentLoader = contentLoader;
@@ -30,12 +30,13 @@ public class ContentManager {
     }
 
     public void proceedTo(@NonNull Contents content){
-        proceedTo(content, null);
-    }
-
-    public void proceedTo(@NonNull Contents content, ConfigStorage configuration){
-        if(Contents.getPrimaryContents().contains(content))
+        if(content.equals(currentContent)) {
+            return;
+        }else if(Contents.getPrimaryContents().contains(content)) {
             contentTracker.forgetAll();
-        contentTracker.remember(contentLoader.load(content, configuration));
+        }
+        contentTracker.remember(contentLoader.load(content));
+
+        currentContent = content;
     }
 }

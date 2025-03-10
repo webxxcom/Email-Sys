@@ -47,8 +47,10 @@ public class EmailRepositoryImpl implements EmailRepository {
 
     @Override
     @Transactional
-    public Email toggleEmailStar(Email email) {
-        Objects.requireNonNull(email).toggleStarred();
+    public Email toggleEmailStar(@NonNull Email email) {
+        Email e = entityManager.find(Email.class, email.getId());
+        Objects.requireNonNull(e).toggleStarred();
+        email.setStarred(e.isStarred());
         return email;
     }
 
@@ -106,6 +108,13 @@ public class EmailRepositoryImpl implements EmailRepository {
         return entityManager
                 .createQuery("select e from Email e where e.receiver = :user", Email.class)
                 .setParameter("user", user)
+                .getResultList();
+    }
+
+    @Override
+    public Collection<String> getAvailableEmails() {
+        return entityManager.createQuery("select distinct e.receiver.email from Email e", String.class)
+                .setMaxResults(10)
                 .getResultList();
     }
 }

@@ -61,7 +61,6 @@ public class EmailService {
         }
         User receiver = optionalReceiver.get();
 
-
         return Result.ofSuccess(
                 emailRepository.save(createEmail(header, emailText, sender, receiver)),
                 "Message was successfully sent"
@@ -70,5 +69,9 @@ public class EmailService {
 
     public ObservableList<Email> getInboxForUser(User user) {
         return FXCollections.observableArrayList(emailRepository.getInboxForUser(user));
+    }
+
+    public ObservableList<String> getAvailableEmails() {
+        return FXCollections.observableArrayList(emailRepository.getAvailableEmails());
     }
 }

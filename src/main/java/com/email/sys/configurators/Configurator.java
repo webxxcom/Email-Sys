@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface Configurator {
-    void configure(Object object, ConfigStorage config);
+    void configure(Object object);
 }

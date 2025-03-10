@@ -1,6 +1,7 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
+import javafx.beans.property.SimpleBooleanProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,5 +61,9 @@ public class Email {
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 '}';
+    }
+
+    public Object starredProperty() {
+        return null;
     }
 }

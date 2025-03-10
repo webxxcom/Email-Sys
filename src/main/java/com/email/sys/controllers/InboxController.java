@@ -78,7 +78,7 @@ public class InboxController implements Initializable {
 
     private void updateInboxCombo(Observable observable) {
         emails.setItems(switch (filterComboBox.getSelectionModel().getSelectedItem()) {
-            case ALL -> FXCollections.observableArrayList(sessionService.getUser().getInboxEmails());
+            case ALL -> emailService.getInboxForUser(sessionService.getUser());
             case SPAM -> emailService.getSpamEmailsForUser(sessionService.getUser());
             case STARRED -> emailService.getStarredMessagesForUser(sessionService.getUser());
         });
@@ -89,8 +89,7 @@ public class InboxController implements Initializable {
             Email email = emails.getSelectionModel().getSelectedItem();
             if(email != null) {
                 configStorage.add(ConfigKey.EMAIL, email);
-
-                contentManager.proceedTo(Contents.EMAIL, configStorage);
+                contentManager.proceedTo(Contents.EMAIL);
             }
         }
     }

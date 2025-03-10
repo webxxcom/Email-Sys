@@ -92,4 +92,11 @@ class EmailRepositoryTest {
         assertTrue(filteredInbox.getFirst().getText().contains(filter));
         assertEquals(1, filteredInbox.size());
     }
+
+    @Test
+    void toggleStarEmailTest(){
+        boolean before = mockEmail1.isStarred();
+        Email e = emailRepository.toggleEmailStar(mockEmail1);
+        assertNotEquals(before, e.isStarred());
+    }
 }

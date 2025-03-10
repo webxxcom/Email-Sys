@@ -3,6 +3,7 @@ package com.email.sys.entities;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

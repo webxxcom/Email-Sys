@@ -85,6 +85,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
             private Label getStarLabel(Email email) {
                 Label starLabel = new Label(email.isStarred() ? "★" : "☆");
                 starLabel.setFont(Font.font(ARIAL, 16));
+
                 starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                 starLabel.setOnMouseClicked(evt -> {
                     emailService.toggleEmailStar(email);

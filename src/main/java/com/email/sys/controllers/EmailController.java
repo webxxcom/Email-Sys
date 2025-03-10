@@ -1,9 +1,12 @@
 package com.email.sys.controllers;
 
+import com.email.sys.Contents;
+import com.email.sys.SceneManager;
 import com.email.sys.configurators.ConfigKey;
 import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
 import com.email.sys.trackers.ContentManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,5 +44,10 @@ public class EmailController implements DataInjectable {
         emailSender.setText(email.getSender().getEmail());
         emailBody.setText(email.getText());
         backButton.setOnAction(evt -> contentManager.goBack());
+        forwardButton.setOnAction(this::showForward);
+    }
+
+    private void showForward(ActionEvent actionEvent) {
+        contentManager.proceedTo(Contents.FORWARD);
     }
 }

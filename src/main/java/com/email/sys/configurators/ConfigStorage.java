@@ -1,7 +1,6 @@
 package com.email.sys.configurators;
 
 import lombok.Getter;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.Map;
 
 @Getter
 @Component
-@Scope("prototype")
 public class ConfigStorage {
 
     private final Map<ConfigKey, Object> config = new HashMap<>();
