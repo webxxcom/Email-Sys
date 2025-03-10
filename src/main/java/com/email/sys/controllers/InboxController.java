@@ -7,7 +7,6 @@ import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
 import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
-import com.email.sys.services.UserService;
 import com.email.sys.trackers.ContentManager;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -16,13 +15,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -51,7 +48,6 @@ public class InboxController implements Initializable {
     }
 
     private final ContentManager contentManager;
-    private final UserService userService;
     private final SessionService sessionService;
 
     String previousFilter;
@@ -62,8 +58,7 @@ public class InboxController implements Initializable {
     @FXML ComboBox<InboxFilters> filterComboBox;
 
     @Autowired
-    public InboxController(UserService userService, SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage) {
-        this.userService = userService;
+    public InboxController(SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage) {
         this.sessionService = sessionService;
         this.contentManager = contentManager;
         this.emailService = emailService;
@@ -72,10 +67,10 @@ public class InboxController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        emails.setCellFactory(new EmailCellFactory(userService, emailService));
+        emails.setCellFactory(new EmailCellFactory(emailService));
 
         emails.setOnMouseClicked(this::openEmail);
-        emails.setItems(FXCollections.observableArrayList(sessionService.getUser().getInboxEmails()));
+        emails.setItems(emailService.getInboxForUser(sessionService.getUser()));
         searchButton.setOnAction(this::filterInbox);
         filterComboBox.setItems(FXCollections.observableArrayList(InboxFilters.values()));
         filterComboBox.valueProperty().addListener(this::updateInboxCombo);

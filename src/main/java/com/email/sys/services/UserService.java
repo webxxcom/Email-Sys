@@ -5,6 +5,8 @@ import com.email.sys.Result;
 import com.email.sys.entities.User;
 import com.email.sys.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.NonNull;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,8 @@ public class UserService {
         );
     }
 
-    public Result<User> tryLogIn(String email, String password) {
+    @Transactional
+    public Result<User> tryLogIn(@NonNull String email, @NonNull String password) {
         if(email.isBlank()){
             return Result.ofError("Please fill the email");
         }else if(password.isBlank()){

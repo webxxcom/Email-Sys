@@ -1,6 +1,7 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@Setter @Getter @NoArgsConstructor
+@NoArgsConstructor @Setter @Getter
 @Entity
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +32,10 @@ public class User {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] avatar;
 
-    @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sender")
     private List<Email> sentEmails;
 
-    @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "receiver")
     private List<Email> inboxEmails;
 
     public User(String email, String password) {

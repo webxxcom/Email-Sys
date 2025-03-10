@@ -67,4 +67,8 @@ public class EmailService {
                 "Message was successfully sent"
         );
     }
+
+    public ObservableList<Email> getInboxForUser(User user) {
+        return FXCollections.observableArrayList(emailRepository.getInboxForUser(user));
+    }
 }
