@@ -94,7 +94,11 @@ public class EmailService {
             }
         }
 
-        return FXCollections.observableArrayList(inboxForUser);
+        return FXCollections.observableArrayList(inboxForUser
+                .stream()
+                .sorted((o1, o2) -> o2.getSendDate().compareTo(o1.getSendDate()))
+                .toList()
+        );
     }
 
     public ObservableList<String> getAvailableEmails() {
@@ -104,6 +108,6 @@ public class EmailService {
     @Transactional
     public void forward(Email email, User forwarder, User forwardTo) {
         Email forward = emailRepository.forward(email, forwarder, forwardTo);
-        forwardedEmailsRepository.save(new ForwardedEmail(forward, forwarder, forwardTo));
+        forwardedEmailsRepository.save(new ForwardedEmail(forward, email.getSender(), email.getReceiver()));
     }
 }
