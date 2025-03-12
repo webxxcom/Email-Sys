@@ -1,6 +1,7 @@
 package com.email.sys.repositories;
 
 import com.email.sys.entities.Email;
+import com.email.sys.entities.EmailContent;
 import com.email.sys.entities.User;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,8 +41,8 @@ class EmailRepositoryTest {
                                 assertNotNull(u.getId(),
                                 "Some of the users was not saved"));
 
-        mockEmail1 = new Email("Email with some text", u2, u1);
-        mockEmail2 = new Email("Another email but with no text", u3, u1);
+        mockEmail1 = new Email(new EmailContent("Email with some text"), u2, u1);
+        mockEmail2 = new Email(new EmailContent("Another email but with no text"), u3, u1);
         emailRepository
                 .saveAll(List.of(mockEmail1, mockEmail2))
                 .forEach(el ->
@@ -69,7 +70,7 @@ class EmailRepositoryTest {
 
     @Test
     void saveAllTransaction_ShouldRollbackOnFailure() {
-        Email invalidEmail = new Email("Invalid", u1, null);
+        Email invalidEmail = new Email(new EmailContent("Invalid"), u1, null);
 
         List<Email> emails = List.of(mockEmail1, mockEmail2, invalidEmail);
         assertThrows(DataIntegrityViolationException.class,
@@ -89,7 +90,7 @@ class EmailRepositoryTest {
 
         List<Email> filteredInbox = emailRepository.getFilteredInbox(u1, filter);
         assertFalse(filteredInbox.isEmpty());
-        assertTrue(filteredInbox.getFirst().getText().contains(filter));
+        assertTrue(filteredInbox.getFirst().getEmailContent().getText().contains(filter));
         assertEquals(1, filteredInbox.size());
     }
 

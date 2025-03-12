@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface EmailRepository {
@@ -31,4 +32,6 @@ public interface EmailRepository {
     Collection<Email> getInboxForUser(User user);
 
     Collection<String> getAvailableEmails();
+
+    Email forward(Email email, User forwarder, User forwardTo);
 }

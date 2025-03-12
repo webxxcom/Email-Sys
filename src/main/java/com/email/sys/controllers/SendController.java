@@ -4,7 +4,6 @@ import com.email.sys.ElementsUtils;
 import com.email.sys.Result;
 import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
-import com.email.sys.services.UserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +22,6 @@ import java.util.ResourceBundle;
 @Scope("prototype")
 public class SendController implements Initializable, Resettable {
     private final SessionService sessionService;
-    private final UserService userService;
     private final EmailService emailService;
 
     @FXML
@@ -40,9 +38,8 @@ public class SendController implements Initializable, Resettable {
     private Button sendButton;
 
     @Autowired
-    public SendController(SessionService sessionService, UserService userService, EmailService emailService) {
+    public SendController(SessionService sessionService, EmailService emailService) {
         this.sessionService = sessionService;
-        this.userService = userService;
         this.emailService = emailService;
     }
 

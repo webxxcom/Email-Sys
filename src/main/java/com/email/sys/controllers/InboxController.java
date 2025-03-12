@@ -5,6 +5,7 @@ import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.configurators.ConfigKey;
 import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
+import com.email.sys.repositories.EmailRepository;
 import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
 import com.email.sys.trackers.ContentManager;
@@ -33,23 +34,20 @@ public class InboxController implements Initializable {
     private final ConfigStorage configStorage;
     private final ContentManager contentManager;
     private final SessionService sessionService;
+    private final EmailRepository emailRepository;
 
-    @FXML
-    ListView<Email> emails;
-    @FXML
-    TextField searchBar;
-    @FXML
-    Button searchButton;
-    @FXML
-    ComboBox<InboxFilters> filterComboBox;
+    @FXML ListView<Email> emails;
+    @FXML TextField searchBar;
+    @FXML ComboBox<InboxFilters> filterComboBox;
 
     private FilteredList<Email> filteredEmails;
     @Autowired
-    public InboxController(SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage) {
+    public InboxController(SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage, EmailRepository emailRepository) {
         this.sessionService = sessionService;
         this.contentManager = contentManager;
         this.emailService = emailService;
         this.configStorage = configStorage;
+        this.emailRepository = emailRepository;
     }
 
     @Override
@@ -57,7 +55,7 @@ public class InboxController implements Initializable {
         emails.setCellFactory(new EmailCellFactory(emailService));
 
         emails.setOnMouseClicked(this::openEmail);
-        filteredEmails = new FilteredList<>(FXCollections.observableArrayList(sessionService.getUser().getInboxEmails()));
+        filteredEmails = new FilteredList<>(FXCollections.observableArrayList(emailService.getInboxForUser(sessionService.getUser())));
         emails.setItems(filteredEmails);
         searchBar.textProperty().addListener(this::filterInbox);
         filterComboBox.setItems(FXCollections.observableArrayList(InboxFilters.values()));
@@ -66,7 +64,7 @@ public class InboxController implements Initializable {
 
     private void filterInbox(Observable observable) {
         filteredEmails.setPredicate(em -> em
-                .getText()
+                .getEmailContent().getText()
                 .toLowerCase()
                 .contains(searchBar.getText().toLowerCase())
         );

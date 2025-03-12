@@ -18,11 +18,9 @@ public class Email {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String header;
-
-    @Column(nullable = false, updatable = false)
-    private String text;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false, updatable = false)
+    private EmailContent emailContent;
 
     @Column(nullable = false)
     private boolean isStarred;
@@ -36,13 +34,8 @@ public class Email {
     @ManyToOne(optional = false)
     private User receiver;
 
-    public Email(String text, User sender, User receiver) {
-        this("", text, sender, receiver);
-    }
-
-    public Email(String header, String text, User sender, User receiver) {
-        this.text = text;
-        this.header = header;
+    public Email(EmailContent emailContent, User sender, User receiver) {
+        this.emailContent = emailContent;
         this.sender = sender;
         this.receiver = receiver;
     }
@@ -60,7 +53,7 @@ public class Email {
     public String toString() {
         return "Email{" +
                 "id=" + id +
-                ", text='" + text + '\'' +
+                ", text='" + emailContent.getText() + '\'' +
                 ", sender=" + sender +
                 ", receiver=" + receiver +
                 '}';

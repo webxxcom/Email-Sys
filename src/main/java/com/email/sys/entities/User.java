@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor
 @Setter
@@ -37,10 +38,10 @@ public class User {
     private byte[] avatar;
 
     @OneToMany(mappedBy = "sender")
-    private List<Email> sentEmails;
+    private Set<Email> sentEmails;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
-    private List<Email> inboxEmails;
+    private Set<Email> inboxEmails;
 
     public User(String email, String password) {
         this.email = email;

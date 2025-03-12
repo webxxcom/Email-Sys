@@ -35,7 +35,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
             private static final int MAX_TEXT_LENGTH = 100;
 
             private Label getHeaderLabel(Email email) {
-                Label headerLabel = new Label(email.getHeader());
+                Label headerLabel = new Label(email.getEmailContent().getHeader());
                 headerLabel.setFont(Font.font(ARIAL, FontWeight.BOLD, 14));
                 headerLabel.setTextFill(
                         email.getReceiver().getId().equals(email.getSender().getId())
@@ -45,7 +45,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
             }
 
             private Label getTextLabel(Email email) {
-                String emailText = email.getText();
+                String emailText = email.getEmailContent().getText();
                 Label textLabel = new Label(emailText.length() > MAX_TEXT_LENGTH ? emailText.substring(0, MAX_TEXT_LENGTH - 3) + "..." : emailText);
                 textLabel.setFont(Font.font(ARIAL, 12));
                 textLabel.setTextFill(Color.GRAY);
@@ -90,6 +90,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                     emailService.toggleEmailStar(email);
                     starLabel.setText(email.isStarred() ? "★" : "☆");
                     starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
+                    emailListView.refresh();
                 });
                 return starLabel;
             }
@@ -107,6 +108,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                 HBox cellLayout = new HBox(10);
                 cellLayout.setPadding(new Insets(10));
                 cellLayout.setAlignment(Pos.CENTER_LEFT);
+                cellLayout.setMaxHeight(50);
 
                 cellLayout.getChildren().addAll(
                         getAvatar(email),

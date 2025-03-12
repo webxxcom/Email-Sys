@@ -62,10 +62,10 @@ class UserRepositoryTest {
     @Test
     void getForUserEmailLike(){
         String emailLike = "coo";
-        Collection<String> emailsLike = userRepository.getEmailsLike(emailLike);
-        Optional<String> optional = emailsLike.stream().findFirst();
+        Collection<User> emailsLike = userRepository.getUsersWithEmailLike(emailLike);
+        Optional<User> optional = emailsLike.stream().findFirst();
         assertTrue(optional.isPresent());
-        assertTrue(optional.get().contains(emailLike));
+        assertTrue(optional.get().getEmail().contains(emailLike));
         assertEquals(1, emailsLike.size());
     }
 }

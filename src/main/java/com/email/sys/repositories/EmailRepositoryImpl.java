@@ -9,10 +9,7 @@ import lombok.NonNull;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class EmailRepositoryImpl implements EmailRepository {
@@ -27,7 +24,7 @@ public class EmailRepositoryImpl implements EmailRepository {
     @Override
     public List<Email> getFilteredInbox(User user, String filter) {
         TypedQuery<Email> q = entityManager.createQuery(
-                "select em from Email em where em.receiver=:user and em.text like :filter",
+                "select em from Email em where em.receiver=:user and em.emailContent.text like :filter",
                 Email.class
         );
         q.setParameter("user", user);
@@ -116,5 +113,13 @@ public class EmailRepositoryImpl implements EmailRepository {
         return entityManager.createQuery("select distinct e.receiver.email from Email e", String.class)
                 .setMaxResults(10)
                 .getResultList();
+    }
+
+    @Override
+    @Transactional
+    public Email forward(@NonNull Email email, User forwarder, User forwardTo) {
+        return entityManager.merge(
+                new Email(email.getEmailContent(), forwarder, forwardTo)
+        );
     }
 }

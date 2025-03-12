@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -29,10 +31,10 @@ class EmailServiceTest {
         String filterText = "important";
 
         Email email1 = new Email();
-        email1.setText("Some important message");
+        email1.getEmailContent().setText("Some important message");
 
         Email email2 = new Email();
-        email2.setText("Random spam");
+        email2.getEmailContent().setText("Random spam");
 
         List<Email> emails = List.of(email1, email2);
 
@@ -40,13 +42,13 @@ class EmailServiceTest {
 
         User user = new User();
         user.setId(1L);
-        user.setInboxEmails(emails);
+        user.setInboxEmails(emails.stream().collect(Collectors.toSet()));
         ObservableList<Email> filteredInbox = emailService.getFilteredInboxForUser(
                 user, filterText
         );
         assertFalse(filteredInbox.isEmpty());
         assertFalse(filteredInbox.filtered(
-                el -> el.getText().contains(filterText)).isEmpty()
+                el -> el.getEmailContent().getText().contains(filterText)).isEmpty()
         );
     }
 
@@ -60,7 +62,7 @@ class EmailServiceTest {
         e2.setId(2L);
         e2.setStarred(true);
 
-        List<Email> emails = List.of(e1, e2);
+        Set<Email> emails = Set.of(e1, e2);
         User u = new User();
         u.setInboxEmails(emails);
 

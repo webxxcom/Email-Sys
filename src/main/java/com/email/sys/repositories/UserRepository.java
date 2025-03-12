@@ -16,6 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select count(u) > 0 from User u where u.email = :email ")
     boolean userWithEmailExists(String email);
 
-    @Query("select u.email from User u where u.email like :emLike%")
-    Collection<String> getEmailsLike(String emLike);
+    @Query("select u from User u where u.email like :emLike%")
+    Collection<User> getUsersWithEmailLike(String emLike);
 }

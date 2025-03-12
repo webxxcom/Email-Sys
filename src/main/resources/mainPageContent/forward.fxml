@@ -18,7 +18,7 @@
         </VBox.margin>
     </ListView>
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-        <Button fx:id="sendButton" mnemonicParsing="false" styleClass="primary-button" text="Send" />
+        <Button fx:id="forwardButton" mnemonicParsing="false" styleClass="primary-button" text="Send" />
         <Button fx:id="backButton" mnemonicParsing="false" styleClass="back-button" text="Back" />
     </HBox>
     <padding>

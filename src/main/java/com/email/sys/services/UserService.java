@@ -72,7 +72,7 @@ public class UserService {
         }
     }
 
-    public ObservableList<String> searchForEmail(@NonNull String emLike) {
-        return FXCollections.observableArrayList(userRepository.getEmailsLike(emLike));
+    public ObservableList<User> searchForEmail(@NonNull String emLike) {
+        return FXCollections.observableArrayList(userRepository.getUsersWithEmailLike(emLike));
     }
 }
