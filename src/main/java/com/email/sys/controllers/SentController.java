@@ -4,7 +4,6 @@ import com.email.sys.cell.factories.EmailCellFactory;
 import com.email.sys.entities.Email;
 import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -23,12 +22,9 @@ public class SentController implements Initializable {
     private final SessionService sessionService;
     private final EmailService emailService;
 
-    @FXML
-    private TextField searchBar;
-    @FXML
-    private Button searchButton;
-    @FXML
-    private ListView<Email> sentEmails;
+    @FXML private TextField searchBar;
+    @FXML private Button searchButton;
+    @FXML private ListView<Email> sentEmails;
 
     public SentController(SessionService sessionService, EmailService emailService) {
         this.sessionService = sessionService;
@@ -38,6 +34,6 @@ public class SentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sentEmails.setCellFactory(new EmailCellFactory(emailService));
-        sentEmails.setItems(FXCollections.observableArrayList(sessionService.getUser().getSentEmails()));
+        sentEmails.setItems(emailService.getSentForUser(sessionService.getUser()));
     }
 }

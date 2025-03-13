@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -42,7 +42,7 @@ class EmailServiceTest {
 
         User user = new User();
         user.setId(1L);
-        user.setInboxEmails(emails.stream().collect(Collectors.toSet()));
+        user.setInboxEmails(new HashSet<>(emails));
         ObservableList<Email> filteredInbox = emailService.getFilteredInboxForUser(
                 user, filterText
         );

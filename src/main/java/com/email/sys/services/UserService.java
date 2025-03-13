@@ -75,4 +75,17 @@ public class UserService {
     public ObservableList<User> searchForEmail(@NonNull String emLike) {
         return FXCollections.observableArrayList(userRepository.getUsersWithEmailLike(emLike));
     }
+
+    public ObservableList<User> getUsersListFor(@NonNull User user) {
+        return FXCollections.observableArrayList(userRepository.getKnownUsersFor(user));
+    }
+
+    public ObservableList<User> performUserSearch(String userEmail, User user) {
+        Optional<User> forEmail = getForEmail(userEmail);
+        if(forEmail.isPresent()) {
+            return FXCollections.observableArrayList(forEmail.get());
+        } else{
+            return getUsersListFor(user);
+        }
+    }
 }

@@ -17,7 +17,7 @@ public enum Contents {
     private final String path;
 
     Contents(String path) {
-        this.path = "/mainPageContent" + path + ".fxml";
+        this.path = "/fxml/mainPageContent" + path + ".fxml";
     }
 
     /**

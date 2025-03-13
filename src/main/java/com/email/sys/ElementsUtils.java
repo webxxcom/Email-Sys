@@ -1,8 +1,16 @@
 package com.email.sys;
 
 import com.email.sys.controllers.Resettable;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 public class ElementsUtils {
 
@@ -44,5 +52,19 @@ public class ElementsUtils {
         if (fail.getParent() != null) {
             fail.getParent().requestLayout();
         }
+    }
+
+    public static <T> void addDebouncingActionEventForProperty(Property<T> property, int delay, EventHandler<ActionEvent> eventHandler){
+         property.addListener(new ChangeListener<T>() {
+             private final Timeline timeline = new Timeline(new KeyFrame(
+                     Duration.millis(delay),
+                     eventHandler)
+             );
+
+             @Override
+             public void changed(ObservableValue<? extends T> observableValue, T t, T t1) {
+                timeline.playFromStart();
+             }
+         });
     }
 }

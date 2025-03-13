@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" spacing="20.0" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.ForwardEmailController">
+
+    <!-- Page Title -->
+    <Label styleClass="header-label" text="Forward Email" />
+
+    <!-- Search Field and Button -->
+    <HBox alignment="CENTER" spacing="10.0">
+        <TextField fx:id="searchBar" minWidth="300" prefHeight="35.0" promptText="Enter recipient's email" styleClass="search-bar" />
+        <Button fx:id="searchButton" styleClass="search-button" text="Find" />
+    </HBox>
+
+    <Separator />
+
+    <VBox alignment="CENTER" spacing="5.0">
+        <Label styleClass="sub-header-label" text="Select Recipient" />
+        <ListView fx:id="usersList" prefHeight="250.0" prefWidth="400.0" styleClass="user-list" />
+    </VBox>
+
+    <HBox alignment="CENTER" spacing="15.0">
+        <Button fx:id="forwardButton" styleClass="primary-button" text="Forward Email" />
+        <Button fx:id="cancelButton" styleClass="secondary-button" text="Cancel" />
+    </HBox>
+
+    <HBox alignment="CENTER">
+        <Label fx:id="errorLabel" managed="false" styleClass="error-message"/>
+        <Label fx:id="successLabel" managed="false" styleClass="success-message"/>
+    </HBox>
+
+    <padding>
+        <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+    </padding>
+</VBox>

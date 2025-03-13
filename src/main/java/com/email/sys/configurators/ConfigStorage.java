@@ -1,13 +1,15 @@
 package com.email.sys.configurators;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@Component
+@Component @ToString @EqualsAndHashCode
 public class ConfigStorage {
 
     private final Map<ConfigKey, Object> config = new HashMap<>();

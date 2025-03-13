@@ -68,11 +68,11 @@ public class LogInController implements Initializable {
             ElementsUtils.showLabel(errorLabel, res.message());
         } else {
             sessionService.setUser(res.data());
-            sceneManager.switchScene(Views.MAIN_PAGE);
+            sceneManager.goTo(Views.MAIN_PAGE);
         }
     }
 
     public void navigateToSignUp() {
-        sceneManager.switchScene(Views.SIGN_UP);
+        sceneManager.goTo(Views.SIGN_UP);
     }
 }

@@ -11,7 +11,7 @@ public enum Views {
     private final String path;
 
     Views(String path) {
-        this.path = path + ".fxml";
+        this.path = "/fxml" + path + ".fxml";
     }
 
 }

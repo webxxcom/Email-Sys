@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="BOTTOM_RIGHT" spacing="15"
+      styleClass="root"
+      stylesheets="@contentsStyles.css"
+      xmlns="http://javafx.com/javafx/11.0.14-internal"
+      fx:controller="com.email.sys.controllers.SendController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+
+    <HBox alignment="CENTER">
+        <Label fx:id="errorLabel" managed="false" styleClass="error-message"/>
+        <Label fx:id="successLabel" managed="false" styleClass="success-message"/>
+    </HBox>
+
+    <TextField fx:id="recipientEmailField" promptText="Recipient Email" styleClass="text-field"/>
+    <TextField fx:id="emailHeaderField" promptText="Email Subject" styleClass="text-field"/>
+    <TextArea fx:id="emailTextArea" promptText="Write your message here..." styleClass="text-area" wrapText="true"/>
+
+    <Button fx:id="sendButton" styleClass="button" text="Send Email"/>
+</VBox>

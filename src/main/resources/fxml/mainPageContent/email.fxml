@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" spacing="20" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.EmailController">
+
+    <!-- Email Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="email-header">
+        <Button fx:id="backButton" styleClass="back-button" text="Back" />
+        <VBox>
+            <Label fx:id="emailSubject" styleClass="email-subject" text="Email Subject" />
+            <Label fx:id="emailSender" styleClass="email-sender" text="From: sender@example.com" />
+        </VBox>
+      <VBox.margin>
+         <Insets left="10.0" right="10.0" top="10.0" />
+      </VBox.margin>
+    </HBox>
+
+    <!-- Email Body -->
+    <TextArea fx:id="emailBody" editable="false" prefHeight="281.0" prefWidth="560.0" styleClass="email-body" wrapText="true">
+      <VBox.margin>
+         <Insets left="10.0" right="10.0" />
+      </VBox.margin></TextArea>
+
+    <!-- Buttons for Actions -->
+    <HBox alignment="CENTER_RIGHT" spacing="15">
+        <Button fx:id="replyButton" styleClass="primary-button" text="Reply" />
+        <Button fx:id="forwardButton" styleClass="secondary-button" text="Forward">
+         <HBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </HBox.margin></Button>
+    </HBox>
+</VBox>

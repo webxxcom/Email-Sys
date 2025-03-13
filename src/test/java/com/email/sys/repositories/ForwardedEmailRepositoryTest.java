@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,7 +52,7 @@ class ForwardedEmailRepositoryTest {
     @Test
     void saveAndFindForwardedEmailTest(){
         ForwardedEmail save = forwardedEmailsRepository.save(forwardedEmail);
-        List<ForwardedEmail> forwardedEmailList = (List<ForwardedEmail>) forwardedEmailsRepository.getForUser(forwardedTo);
+        List<ForwardedEmail> forwardedEmailList = forwardedEmailsRepository.getForUser(forwardedTo);
 
         assertFalse(forwardedEmailList.isEmpty());
         assertEquals(save, forwardedEmailList.getFirst());

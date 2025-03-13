@@ -1,27 +1,23 @@
 package com.email.sys.controllers;
 
+import com.email.sys.ElementsUtils;
+import com.email.sys.Result;
 import com.email.sys.cell.factories.UsersCellFactory;
 import com.email.sys.configurators.ConfigKey;
 import com.email.sys.configurators.ConfigStorage;
 import com.email.sys.entities.Email;
-import com.email.sys.entities.ForwardedEmail;
 import com.email.sys.entities.User;
-import com.email.sys.repositories.EmailRepository;
-import com.email.sys.repositories.ForwardedEmailsRepository;
-import com.email.sys.repositories.UserRepository;
 import com.email.sys.services.EmailService;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
 import com.email.sys.trackers.ContentManager;
-import jakarta.transaction.Transactional;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -34,41 +30,54 @@ public class ForwardEmailController implements Initializable {
     private final UserService userService;
     private final ConfigStorage configStorage;
     private final SessionService sessionService;
-    private final UserRepository userRepository;
-    private final ForwardedEmailsRepository forwardedEmailsRepository;
-    private final EmailRepository emailRepository;
 
+    @FXML private TextField searchBar;
+    @FXML private Button searchButton;
+    @FXML private ListView<User> usersList;
+    @FXML private Button forwardButton;
+    @FXML private Button cancelButton;
+    @FXML private Label successLabel;
+    @FXML private Label errorLabel;
 
-    @FXML
-    private TextField userSearch;
-    @FXML
-    private Button searchButton;
-    @FXML
-    private ListView<User> usersList;
-    @FXML
-    private Button forwardButton;
-    @FXML
-    private Button backButton;
-
-    public ForwardEmailController(ContentManager contentManager, EmailService emailService, UserService userService, ConfigStorage configStorage, SessionService sessionService, UserRepository userRepository, ForwardedEmailsRepository forwardedEmailsRepository, EmailRepository emailRepository) {
+    public ForwardEmailController(ContentManager contentManager, EmailService emailService, UserService userService, ConfigStorage configStorage, SessionService sessionService) {
         this.contentManager = contentManager;
         this.emailService = emailService;
         this.userService = userService;
         this.configStorage = configStorage;
         this.sessionService = sessionService;
-        this.userRepository = userRepository;
-        this.forwardedEmailsRepository = forwardedEmailsRepository;
-        this.emailRepository = emailRepository;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         usersList.setCellFactory(new UsersCellFactory(configStorage));
 
-        searchButton.setOnAction(this::searchEmail);
-        backButton.setOnAction(evt -> contentManager.goBack());
-        usersList.setItems(FXCollections.observableArrayList(userRepository.findAll()));
+        cancelButton.setOnAction(evt -> contentManager.goBack());
         forwardButton.setOnAction(this::forwardEmail);
+        initUserSearch();
+        initUsersList();
+    }
+
+    private void initUserSearch(){
+        searchButton.setOnAction(evt ->
+                usersList.setItems(userService.searchForEmail(searchBar.getText()))
+        );
+
+        /* Reduce number of queries by adding debouncing search */
+        ElementsUtils.addDebouncingActionEventForProperty(
+                searchBar.textProperty(),
+                400,
+                event ->
+                        /* Search is cached hence it's not expensive */
+                        usersList.setItems(userService.performUserSearch(
+                                searchBar.getText(),
+                                sessionService.getUser())
+                        )
+        );
+    }
+
+    private void initUsersList(){
+        /* Set user's list values */
+        usersList.setItems(userService.getUsersListFor(sessionService.getUser()));
     }
 
     public void forwardEmail(ActionEvent actionEvent) {
@@ -76,10 +85,7 @@ public class ForwardEmailController implements Initializable {
         User forwarder = sessionService.getUser();
         User forwardTo = usersList.getSelectionModel().getSelectedItem();
 
-        emailService.forward(email, forwarder, forwardTo);
-    }
-
-    private void searchEmail(ActionEvent actionEvent) {
-        usersList.setItems(userService.searchForEmail(userSearch.getText()));
+        Result<Email> forward = emailService.forward(email, forwarder, forwardTo);
+        ElementsUtils.showCorrespondingLabel(forward, successLabel, errorLabel);
     }
 }

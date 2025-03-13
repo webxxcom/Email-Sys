@@ -6,10 +6,9 @@
 <SplitPane dividerPositions="0.23" orientation="VERTICAL" stylesheets="@contentsStyles.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.email.sys.controllers.InboxController">
 
     <TitledPane prefWidth="379.0" text="Inbox">
-        <HBox alignment="CENTER_RIGHT" spacing="30.0">
-            <TextField fx:id="searchBar" minWidth="200.0" prefHeight="34.0" promptText="Type keywords" styleClass="search-bar" />
-
-            <ComboBox fx:id="filterComboBox" prefHeight="35.0" prefWidth="133.0" styleClass="filter-dropdown" />
+        <HBox alignment="CENTER_RIGHT" spacing="30.0" styleClass="inbox-header" BorderPane.alignment="CENTER">
+            <TextField fx:id="searchBar" prefHeight="34.0" promptText="Search emails..." styleClass="search-bar" />
+            <ComboBox fx:id="filterComboBox" prefHeight="35.0" styleClass="filter-dropdown" />
         </HBox>
     </TitledPane>
 

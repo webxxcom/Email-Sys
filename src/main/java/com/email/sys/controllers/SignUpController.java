@@ -55,7 +55,7 @@ public class SignUpController implements Initializable, Resettable {
     }
 
     public void returnBackToLogin() {
-        sceneManager.switchScene(Views.LOG_IN);
+        sceneManager.goTo(Views.LOG_IN);
     }
 
     public void tryRegisterUser() {

@@ -122,4 +122,13 @@ public class EmailRepositoryImpl implements EmailRepository {
                 new Email(email.getEmailContent(), forwarder, forwardTo)
         );
     }
+
+    @Override
+    public Collection<Email> getSentForUser(User user) {
+        return entityManager.createQuery(
+                "select e from Email e where e.sender = :user",
+                Email.class
+        ).setParameter("user", user)
+                .getResultList();
+    }
 }

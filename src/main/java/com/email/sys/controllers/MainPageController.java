@@ -1,5 +1,6 @@
 package com.email.sys.controllers;
 
+import com.email.sys.ContentArea;
 import com.email.sys.Contents;
 import com.email.sys.SceneManager;
 import com.email.sys.Views;
@@ -23,6 +24,7 @@ public class MainPageController implements Initializable {
     private final SessionService sessionService;
     private final SceneManager sceneManager;
     private final ContentManager contentManager;
+    private final ContentArea contentArea;
 
     @FXML Pane contentPane;
     @FXML VBox navigationPanel;
@@ -33,15 +35,16 @@ public class MainPageController implements Initializable {
     @FXML Button logOutButton;
 
     @Autowired
-    public MainPageController(SessionService sessionService, SceneManager sceneManager, ContentManager contentManager) {
+    public MainPageController(SessionService sessionService, SceneManager sceneManager, ContentManager contentManager, ContentArea contentArea) {
         this.sessionService = sessionService;
         this.sceneManager = sceneManager;
         this.contentManager = contentManager;
+        this.contentArea = contentArea;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        contentManager.getContentArea().setContentPane(contentPane);
+        contentArea.setContentPane(contentPane);
 
         inboxButton.setOnAction(evt -> contentManager.proceedTo(Contents.INBOX));
         sendButton.setOnAction(evt -> contentManager.proceedTo(Contents.SEND));
@@ -52,6 +55,6 @@ public class MainPageController implements Initializable {
 
     public void logOut(ActionEvent actionEvent) {
         sessionService.clean();
-        sceneManager.switchScene(Views.LOG_IN);
+        sceneManager.goTo(Views.LOG_IN);
     }
 }

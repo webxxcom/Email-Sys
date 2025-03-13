@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
+@EnableCaching
 public class JavaFxApplication extends Application {
     ConfigurableApplicationContext springContext;
     SceneManager sceneManager;
@@ -25,7 +27,7 @@ public class JavaFxApplication extends Application {
     public void start(Stage primaryStage) {
         sceneManager.setStage(primaryStage);
 
-        sceneManager.switchScene(Views.LOG_IN);
+        sceneManager.goTo(Views.LOG_IN);
         primaryStage.setTitle("Email");
         primaryStage.show();
     }

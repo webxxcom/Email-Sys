@@ -1,6 +1,11 @@
 package com.email.sys.loaders;
 
+import java.io.Serial;
+
 public class LoadingException extends RuntimeException {
+    @Serial
+    private static final long serialVersionUID = -1317383944963489071L;
+
     public LoadingException() {
     }
 

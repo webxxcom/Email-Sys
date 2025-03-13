@@ -1,19 +1,13 @@
 package com.email.sys.entities;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@EqualsAndHashCode
+@Data @NoArgsConstructor
 @Entity
 public class Email {
     @Id
@@ -49,15 +43,5 @@ public class Email {
 
     public void toggleStarred() {
         setStarred(!isStarred);
-    }
-
-    @Override
-    public String toString() {
-        return "Email{" +
-                "id=" + id +
-                ", text='" + emailContent.getText() + '\'' +
-                ", sender=" + sender +
-                ", receiver=" + receiver +
-                '}';
     }
 }

@@ -6,32 +6,29 @@ import com.email.sys.entities.Email;
 import com.email.sys.entities.EmailContent;
 import com.email.sys.entities.ForwardedEmail;
 import com.email.sys.entities.User;
-import com.email.sys.repositories.EmailContentRepository;
 import com.email.sys.repositories.EmailRepository;
 import com.email.sys.repositories.ForwardedEmailsRepository;
 import com.email.sys.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class EmailService {
 
     private final EmailRepository emailRepository;
     private final UserRepository userRepository;
-    private final EmailContentRepository emailContentRepository;
     private final ForwardedEmailsRepository forwardedEmailsRepository;
     private final ForwardedMessageHandler forwardedMessageHandler;
 
-    public EmailService(EmailRepository emailRepository, UserRepository userRepository, EmailContentRepository emailContentRepository, ForwardedEmailsRepository forwardedEmailsRepository, ForwardedMessageHandler forwardedMessageHandler) {
+    public EmailService(EmailRepository emailRepository, UserRepository userRepository, ForwardedEmailsRepository forwardedEmailsRepository, ForwardedMessageHandler forwardedMessageHandler) {
         this.emailRepository = emailRepository;
         this.userRepository = userRepository;
-        this.emailContentRepository = emailContentRepository;
         this.forwardedEmailsRepository = forwardedEmailsRepository;
         this.forwardedMessageHandler = forwardedMessageHandler;
     }
@@ -106,8 +103,21 @@ public class EmailService {
     }
 
     @Transactional
-    public void forward(Email email, User forwarder, User forwardTo) {
+    public Result<Email> forward(Email email, User forwarder, User forwardTo) {
+        if(email == null){
+            return Result.ofError("No email was chosen to forward.");
+        } else if(forwarder == null){
+            return Result.ofError("The current user session is invalid.");
+        } else if(forwardTo == null){
+            return Result.ofError("Please specify the email recipient");
+        }
         Email forward = emailRepository.forward(email, forwarder, forwardTo);
         forwardedEmailsRepository.save(new ForwardedEmail(forward, email.getSender(), email.getReceiver()));
+
+        return Result.ofSuccess(forward, "Email was successfully forwarded");
+    }
+
+    public ObservableList<Email> getSentForUser(@NonNull User user) {
+        return FXCollections.observableArrayList(getInboxForUser(user));
     }
 }

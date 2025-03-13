@@ -12,8 +12,8 @@ import java.util.Objects;
 
 @Component
 public class SpringFXMLLoader implements Loader<Node, String> {
-    ConfigurableApplicationContext springContext;
-    List<Configurator> configurators;
+    private final ConfigurableApplicationContext springContext;
+    private final List<Configurator> configurators;
 
     @Autowired
     public SpringFXMLLoader(ConfigurableApplicationContext springContext, List<Configurator> configurators) {

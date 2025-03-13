@@ -8,19 +8,17 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Getter
-@Setter
 @Component
 public class SceneManager {
     private final SpringSceneLoader springSceneLoader;
-    private Stage stage;
+    private @Getter @Setter Stage stage;
 
     @Autowired
     public SceneManager(SpringSceneLoader springSceneLoader) {
         this.springSceneLoader = springSceneLoader;
     }
 
-    public void switchScene(Views state) {
+    public void goTo(Views state) {
         Scene scene = springSceneLoader.load(state);
         stage.setScene(scene);
         stage.centerOnScreen();

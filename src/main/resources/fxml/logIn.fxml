@@ -4,7 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" prefHeight="297.0" prefWidth="393.0" spacing="20"
-      stylesheets="styles.css" xmlns="http://javafx.com/javafx/11.0.14-internal"
+      stylesheets="@styles.css"
+      xmlns="http://javafx.com/javafx/11.0.14-internal"
       fx:controller="com.email.sys.controllers.LogInController">
     <VBox alignment="CENTER" prefHeight="214.0" prefWidth="444.0" spacing="20">
         <Label styleClass="header-label" text="User Login">
