@@ -28,16 +28,13 @@ public class LogInController implements Initializable {
     private final UserService userService;
     private final SceneManager sceneManager;
     private final SessionService sessionService;
-    @FXML
-    private TextField emailField;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Button navigateToSignUpButton;
-    @FXML
-    private Label errorLabel;
+
+    @FXML private TextField emailField;
+    @FXML private PasswordField passwordField;
+    @FXML private Button loginButton;
+    @FXML private Button navigateToSignUpButton;
+    @FXML private Label errorLabel;
+
     @Autowired
     public LogInController(UserService userService, SceneManager sceneManager, SessionService sessionService) {
         this.userService = userService;

@@ -43,9 +43,9 @@ public class EmailController implements DataInjectable {
 
     @Override
     public void init() {
-        emailSubject.setText(email.getEmailContent().getHeader());
+        emailSubject.setText(email.getHeader());
         emailSender.setText(email.getSender().getEmail());
-        emailBody.setText(email.getEmailContent().getText());
+        emailBody.setText(email.getText());
         backButton.setOnAction(evt -> contentManager.goBack());
         forwardButton.setOnAction(this::showForward);
     }

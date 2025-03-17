@@ -32,7 +32,7 @@ public interface EmailRepository {
 
     Collection<String> getAvailableEmails();
 
-    Email forward(Email email, User forwarder, User forwardTo);
-
     Collection<Email> getSentForUser(User user);
+
+    Email findById(Long id);
 }

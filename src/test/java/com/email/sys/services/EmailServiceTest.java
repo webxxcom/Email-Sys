@@ -1,5 +1,6 @@
 package com.email.sys.services;
 
+import com.email.sys.ForwardedMessageHandler;
 import com.email.sys.entities.Email;
 import com.email.sys.entities.User;
 import com.email.sys.repositories.EmailRepository;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class EmailServiceTest {
@@ -25,16 +26,18 @@ class EmailServiceTest {
 
     @MockitoBean
     private EmailRepository emailRepository;
+    @Autowired
+    private ForwardedMessageHandler forwardedMessageHandler;
 
     @Test
     void testGetFilteredInbox(){
         String filterText = "important";
 
         Email email1 = new Email();
-        email1.getEmailContent().setText("Some important message");
+        email1.setText("Some important message");
 
         Email email2 = new Email();
-        email2.getEmailContent().setText("Random spam");
+        email2.setText("Random spam");
 
         List<Email> emails = List.of(email1, email2);
 
@@ -48,8 +51,9 @@ class EmailServiceTest {
         );
         assertFalse(filteredInbox.isEmpty());
         assertFalse(filteredInbox.filtered(
-                el -> el.getEmailContent().getText().contains(filterText)).isEmpty()
+                el -> el.getText().contains(filterText)).isEmpty()
         );
+        verify(emailRepository, times(1)).getFilteredInbox(any(), anyString());
     }
 
     @Test
@@ -72,5 +76,6 @@ class EmailServiceTest {
         assertFalse(starredMessagesForUser.isEmpty());
         assertEquals(1, starredMessagesForUser.size());
         assertEquals(e2, starredMessagesForUser.getFirst());
+        verify(emailRepository, times(1)).getStarredEmails(u);
     }
 }

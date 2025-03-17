@@ -37,8 +37,8 @@ public class InboxController implements Initializable {
     @FXML ListView<Email> emails;
     @FXML TextField searchBar;
     @FXML ComboBox<InboxFilters> filterComboBox;
-
     private FilteredList<Email> filteredEmails;
+
     @Autowired
     public InboxController(SessionService sessionService, ContentManager contentManager, EmailService emailService, ConfigStorage configStorage) {
         this.sessionService = sessionService;
@@ -69,7 +69,7 @@ public class InboxController implements Initializable {
 
     private void filterInbox() {
         filteredEmails.setPredicate(em -> em
-                .getEmailContent().getText()
+                .getText()
                 .toLowerCase()
                 .contains(searchBar.getText().toLowerCase())
         );

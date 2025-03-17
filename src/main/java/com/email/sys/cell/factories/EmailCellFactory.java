@@ -35,7 +35,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
             private static final int MAX_TEXT_LENGTH = 100;
 
             private Label getHeaderLabel(Email email) {
-                Label headerLabel = new Label(email.getEmailContent().getHeader());
+                Label headerLabel = new Label(email.getHeader());
                 headerLabel.setFont(Font.font(ARIAL, FontWeight.BOLD, 14));
                 headerLabel.setTextFill(
                         email.getReceiver().getId().equals(email.getSender().getId())
@@ -45,7 +45,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
             }
 
             private Label getTextLabel(Email email) {
-                String emailText = email.getEmailContent().getText();
+                String emailText = email.getText();
                 Label textLabel = new Label(emailText.length() > MAX_TEXT_LENGTH ? emailText.substring(0, MAX_TEXT_LENGTH - 3) + "..." : emailText);
                 textLabel.setFont(Font.font(ARIAL, 12));
                 textLabel.setTextFill(Color.GRAY);
@@ -83,6 +83,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
 
             private Label getStarLabel(Email email) {
                 Label starLabel = new Label(email.isStarred() ? "★" : "☆");
+                starLabel.setId("emailStar");
                 starLabel.setFont(Font.font(ARIAL, 16));
 
                 starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
@@ -91,6 +92,7 @@ public class EmailCellFactory implements Callback<ListView<Email>, ListCell<Emai
                     starLabel.setText(email.isStarred() ? "★" : "☆");
                     starLabel.setTextFill(email.isStarred() ? Color.GOLD : Color.GRAY);
                     emailListView.refresh();
+                    evt.consume();
                 });
                 return starLabel;
             }

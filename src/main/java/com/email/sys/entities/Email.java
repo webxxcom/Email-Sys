@@ -7,16 +7,18 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
-@Data @NoArgsConstructor
+@Data @NoArgsConstructor @AllArgsConstructor
 @Entity
-public class Email {
+public class Email{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(nullable = false, updatable = false)
-    private EmailContent emailContent;
+    @Column(nullable = false, updatable = false)
+    private String header;
+
+    @Column(updatable = false, nullable = false, length = 3000)
+    private String text;
 
     @Column(nullable = false)
     private boolean isStarred;
@@ -30,10 +32,19 @@ public class Email {
     @ManyToOne(optional = false)
     private User receiver;
 
-    public Email(EmailContent emailContent, User sender, User receiver) {
-        this.emailContent = emailContent;
+    public Email(String text, User sender, User receiver) {
+        this("", text, sender, receiver);
+    }
+
+    public Email(String header, String text, User sender, User receiver) {
+        this.header = header;
+        this.text = text;
         this.sender = sender;
         this.receiver = receiver;
+    }
+
+    public Email(@NonNull Email email){
+        this(email.getHeader(), email.getText(), email.getSender(), email.getReceiver());
     }
 
     @PrePersist

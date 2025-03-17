@@ -2,25 +2,23 @@ package com.email.sys;
 
 import com.email.sys.loaders.SpringSceneLoader;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SceneManager {
     private final SpringSceneLoader springSceneLoader;
-    private @Getter @Setter Stage stage;
+    private final StageHolder stageHolder;
 
     @Autowired
-    public SceneManager(SpringSceneLoader springSceneLoader) {
+    public SceneManager(SpringSceneLoader springSceneLoader, StageHolder stageHolder) {
         this.springSceneLoader = springSceneLoader;
+        this.stageHolder = stageHolder;
     }
 
     public void goTo(Views state) {
         Scene scene = springSceneLoader.load(state);
-        stage.setScene(scene);
-        stage.centerOnScreen();
+        stageHolder.getStage().setScene(scene);
+        stageHolder.getStage().centerOnScreen();
     }
 }

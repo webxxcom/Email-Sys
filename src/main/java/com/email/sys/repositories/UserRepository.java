@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Cacheable("knownUsersFor")
     @Query("select distinct e.receiver from Email e where e.sender = :user order by e.receiver.email")
     Collection<User> getKnownUsersFor(User user);
+
+    @Query("select u.email from User u where u.id = :id")
+    String findEmailById(Long id);
 }

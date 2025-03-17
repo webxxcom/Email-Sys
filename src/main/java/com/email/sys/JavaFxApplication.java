@@ -10,8 +10,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 @EnableCaching
 public class JavaFxApplication extends Application {
-    ConfigurableApplicationContext springContext;
-    SceneManager sceneManager;
+    private ConfigurableApplicationContext springContext;
+    private SceneManager sceneManager;
+    private StageHolder stageHolder;
 
     public static void main(String[] args) {
         launch(args);
@@ -21,11 +22,12 @@ public class JavaFxApplication extends Application {
     public void init() {
         springContext = SpringApplication.run(JavaFxApplication.class);
         sceneManager = springContext.getBean(SceneManager.class);
+        stageHolder = springContext.getBean(StageHolder.class);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        sceneManager.setStage(primaryStage);
+        stageHolder.setStage(primaryStage);
 
         sceneManager.goTo(Views.LOG_IN);
         primaryStage.setTitle("Email");

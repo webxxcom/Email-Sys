@@ -2,7 +2,7 @@ package com.email.sys.controllers;
 
 import com.email.sys.ElementsUtils;
 import com.email.sys.Result;
-import com.email.sys.SceneManager;
+import com.email.sys.StageHolder;
 import com.email.sys.entities.User;
 import com.email.sys.services.SessionService;
 import com.email.sys.services.UserService;
@@ -26,9 +26,9 @@ import java.util.ResourceBundle;
 public class SettingsController implements Initializable {
 
     private final SessionService sessionService;
-    private final SceneManager sceneManager;
     private final UserService userService;
     private final User modifiedUser;
+    private final StageHolder stageHolder;
 
     @FXML
     TextField usernameField;
@@ -51,11 +51,11 @@ public class SettingsController implements Initializable {
     @FXML
     Button cancelButton;
 
-    public SettingsController(SessionService sessionService, SceneManager sceneManager, UserService userService) {
+    public SettingsController(SessionService sessionService, UserService userService, StageHolder stageHolder) {
         this.sessionService = sessionService;
-        this.sceneManager = sceneManager;
         this.userService = userService;
         this.modifiedUser = new User(sessionService.getUser());
+        this.stageHolder = stageHolder;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SettingsController implements Initializable {
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.PNG"));
 
-        File f = fc.showOpenDialog(sceneManager.getStage());
+        File f = fc.showOpenDialog(stageHolder.getStage());
         if (f != null) {
             avatarLabel.setText(f.getName());
             try (var fis = new FileInputStream(f)) {

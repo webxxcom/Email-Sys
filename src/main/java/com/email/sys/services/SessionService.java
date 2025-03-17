@@ -7,8 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.ref.Cleaner;
 
-@Setter
-@Getter
+@Setter @Getter
 @Component
 public class SessionService implements Cleaner.Cleanable {
     private User user;
