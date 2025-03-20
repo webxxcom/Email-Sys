@@ -27,20 +27,13 @@ public class SignUpController implements Initializable, Resettable {
     @Value("${email.postfix}")
     private String postfix;
 
-    @FXML
-    private PasswordField confirmPasswordField;
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private TextField passwordField;
-    @FXML
-    private Label errorLabel;
-    @FXML
-    private Label successLabel;
-    @FXML
-    private Button returnButton;
-    @FXML
-    private Button submitButton;
+    @FXML private PasswordField confirmPasswordField;
+    @FXML private TextField usernameField;
+    @FXML private TextField passwordField;
+    @FXML private Label errorLabel;
+    @FXML private Label successLabel;
+    @FXML private Button returnButton;
+    @FXML private Button submitButton;
 
     @Autowired
     public SignUpController(UserService userService, SceneManager sceneManager) {

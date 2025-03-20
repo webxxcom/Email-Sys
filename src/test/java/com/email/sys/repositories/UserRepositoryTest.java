@@ -47,16 +47,16 @@ class UserRepositoryTest {
     }
 
     @Test
-    void testUserWithEmailExists(){
-        assertTrue(userRepository.userWithEmailExists(mockUser1.getEmail()));
+    void testExistsByEmail(){
+        assertTrue(userRepository.existsByEmail(mockUser1.getEmail()));
     }
 
     @Test
     void testUserWithEmailNoExists(){
-        assertFalse(userRepository.userWithEmailExists("9sghysdf g789 sghd7fsdfgh9sdghf"));
-        assertFalse(userRepository.userWithEmailExists(""));
-        assertFalse(userRepository.userWithEmailExists("           "));
-        assertFalse(userRepository.userWithEmailExists("emailWithNoAt"));
+        assertFalse(userRepository.existsByEmail("9sghysdf g789 sghd7fsdfgh9sdghf"));
+        assertFalse(userRepository.existsByEmail(""));
+        assertFalse(userRepository.existsByEmail("           "));
+        assertFalse(userRepository.existsByEmail("emailWithNoAt"));
     }
 
     @Test

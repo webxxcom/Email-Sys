@@ -8,7 +8,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,7 +29,7 @@ public class User {
     @Column(nullable = false, updatable = false)
     private LocalDate createdOn;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private UserSettings userSettings;
 
     @Lob
@@ -40,7 +39,7 @@ public class User {
     @OneToMany(mappedBy = "sender")
     private Set<Email> sentEmails;
 
-    @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "receiver")
     private Set<Email> inboxEmails;
 
     public User(String email, String password) {
@@ -60,8 +59,9 @@ public class User {
     }
 
     @PrePersist
-    private void beforePersisting() {
+    private void prePersist() {
         this.createdOn = LocalDateTime.now().toLocalDate();
+        this.userSettings = new UserSettings(this);
     }
 
     @Override

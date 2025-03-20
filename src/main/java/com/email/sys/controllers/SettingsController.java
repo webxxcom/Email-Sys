@@ -30,26 +30,16 @@ public class SettingsController implements Initializable {
     private final User modifiedUser;
     private final StageHolder stageHolder;
 
-    @FXML
-    TextField usernameField;
-    @FXML
-    TextField emailField;
-    @FXML
-    CheckBox notificationsCheckBox;
-    @FXML
-    ComboBox<String> themeComboBox;
-    @FXML
-    TextArea signatureTextArea;
-    @FXML
-    Label avatarLabel;
-    @FXML
-    Button uploadAvatarButton;
-    @FXML
-    Label savingResultLabel;
-    @FXML
-    Button saveButton;
-    @FXML
-    Button cancelButton;
+    @FXML TextField usernameField;
+    @FXML TextField emailField;
+    @FXML CheckBox notificationsCheckBox;
+    @FXML ComboBox<String> themeComboBox;
+    @FXML TextArea signatureTextArea;
+    @FXML Label avatarLabel;
+    @FXML Button uploadAvatarButton;
+    @FXML Label savingResultLabel;
+    @FXML Button saveButton;
+    @FXML Button cancelButton;
 
     public SettingsController(SessionService sessionService, UserService userService, StageHolder stageHolder) {
         this.sessionService = sessionService;

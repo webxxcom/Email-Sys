@@ -12,7 +12,7 @@ public class UserSettings {
     private Long id;
 
     @MapsId
-    @OneToOne
+    @OneToOne(optional = false)
     private User user;
 
     @Column(nullable = false)
@@ -22,6 +22,10 @@ public class UserSettings {
         this.id = other.id;
         this.user = other.user;
         this.sendNotifications = other.sendNotifications;
+    }
+
+    public UserSettings(User user) {
+        this.user = user;
     }
 
     @PrePersist

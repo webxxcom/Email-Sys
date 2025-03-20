@@ -31,7 +31,7 @@ public class UserService {
 
     @Transactional
     public Result<User> trySignUp(String email, String password) {
-        if (userRepository.userWithEmailExists(email)) {
+        if (userRepository.existsByEmail(email)) {
             return Result.ofError("User with such an email already exists");
         }
 
@@ -41,7 +41,6 @@ public class UserService {
         );
     }
 
-    @Transactional
     public Result<User> tryLogIn(@NonNull String email, @NonNull String password) {
         if (email.isBlank()) {
             return Result.ofError("Please fill the email");
